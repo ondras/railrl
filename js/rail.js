@@ -18,7 +18,6 @@ Game.Rail = {
 		this.TYPE_LINE_HS	= this.TYPE_LINE_H | this.TYPE_LINE_S;
 		this.TYPE_LINE_HB	= this.TYPE_LINE_H | this.TYPE_LINE_B;
 		this.TYPE_LINE_SB	= this.TYPE_LINE_S | this.TYPE_LINE_B;
-		this.TYPE_LINE_HSB	= this.TYPE_LINE_H | this.TYPE_LINE_S | this.TYPE_LINE_B;
 
 		this.TYPE_CORNER_L	= this.SEGMENT_LT | this.SEGMENT_LB;
 		this.TYPE_CORNER_RT	= this.SEGMENT_R | this.SEGMENT_LT;

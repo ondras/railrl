@@ -1,6 +1,6 @@
 /*
 	This is rot.js, the ROguelike Toolkit in JavaScript.
-	Version 0.2, generated on Mon Sep  3 13:50:16 CEST 2012.
+	Version 0.2, generated on Mon Sep  3 16:03:57 CEST 2012.
 */
 
 /**
@@ -402,6 +402,68 @@ ROT.Scheduler.prototype.next = function() {
 	
 	minItem.bucket += 1/minItem.item.getSpeed();
 	return minItem.item;
+}
+/**
+ * Asynchronous main loop
+ */
+ROT.Engine = function() {
+	this._scheduler = new ROT.Scheduler();
+	this._lock = 1;
+}
+
+/**
+ * @param {object} actor Anything with "getSpeed" and "act" methods
+ */
+ROT.Engine.prototype.addActor = function(actor) {
+	this._scheduler.add(actor);
+	return this;
+}
+
+/**
+ * Remove a previously added actor
+ * @param {object} actor
+ */
+ROT.Engine.prototype.removeActor = function(actor) {
+	this._scheduler.remove(actor);
+	return this;
+}
+
+/**
+ * Remove all actors
+ */
+ROT.Engine.prototype.clear = function() {
+	this._scheduler.clear();
+	return this;
+}
+
+/**
+ * Start the main loop. When this call returns, the loop is locked.
+ */
+ROT.Engine.prototype.start = function() {
+	return this.unlock();
+}
+
+/**
+ * Interrupt the engine by an asynchronous action
+ */
+ROT.Engine.prototype.lock = function() {
+	this._lock++;
+}
+
+/**
+ * Resume execution (paused by a previous lock)
+ */
+ROT.Engine.prototype.unlock = function() {
+	if (!this._lock) { throw new Error("Cannot unlock unlocked engine"); }
+	this._lock--;
+
+	while (!this._lock) {
+		var actor = this._scheduler.next();
+		if (!actor) { return this.lock(); } /* no actors */
+		actor.act();
+	}
+
+	return this;
 }
 /**
  * @returns {any} Randomly picked item, null when length=0

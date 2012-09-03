@@ -6,7 +6,6 @@ Game.Display = function(options) {
 
 	this._sqrt32 = Math.sqrt(3)/2;
 }
-
 Game.Display.extend(ROT.Display);
 
 Game.Display.prototype.draw = function(x, y) {
@@ -27,8 +26,11 @@ Game.Display.prototype.draw = function(x, y) {
 	}
 
 	/* foreground */
-	this._context.fillStyle = this._options.fg;
-	this._context.fillText("@", cx, cy);
+	var being = Game.beings[key];
+	if (being) {
+		this._context.fillStyle = being.getColor();
+		this._context.fillText(being.getChar(), cx, cy);
+	}
 }
 
 Game.Display.prototype.center = function(x, y) {
