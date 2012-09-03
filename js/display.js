@@ -58,6 +58,7 @@ Game.Display.prototype._drawRail = function(x, y, rail) {
 
 	this._context.strokeStyle = "#888";
 	this._context.lineWidth = 5;
+	this._context.lineJoin = "round";
 	this._context.globalAlpha = 0.5;
 
 
