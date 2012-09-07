@@ -7,6 +7,15 @@ Game.Rail = {
 	SEGMENT_RB:		32,
 
 	init: function() {
+		this.DIRS = [
+			this.SEGMENT_LT,
+			this.SEGMENT_RT,
+			this.SEGMENT_R,
+			this.SEGMENT_RB,
+			this.SEGMENT_LB,
+			this.SEGMENT_L
+		];
+
 		this.TYPE_NONE = 	0;
 		this.TYPE_CROSS_L	= this.SEGMENT_L | this.SEGMENT_RT | this.SEGMENT_RB;
 		this.TYPE_CROSS_R	= this.SEGMENT_R | this.SEGMENT_LT | this.SEGMENT_LB;
