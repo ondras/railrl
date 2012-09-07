@@ -1,28 +1,28 @@
-var Being = function() {
+Game.Being = function() {
 	this._position = null;
 }
 
-Being.prototype.getColor = function() {
+Game.Being.prototype.getColor = function() {
 
 }
 
-Being.prototype.getChar = function() {
+Game.Being.prototype.getChar = function() {
 	
 }
 
-Being.prototype.getSpeed = function() {
+Game.Being.prototype.getSpeed = function() {
 	return 100;
 }
 
-Being.prototype.setPosition = function(x, y) {
+Game.Being.prototype.setPosition = function(x, y) {
 	this._position = [x, y];
 }
 
-Being.prototype.getPosition = function() {
+Game.Being.prototype.getPosition = function() {
 	return this._position;
 	
 }
 
-Being.prototype.act = function() {
+Game.Being.prototype.act = function() {
 
 }

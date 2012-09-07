@@ -1,5 +1,5 @@
-var Train = function() {
-	Being.call(this);
+Game.Train = function() {
+	Game.Being.call(this);
 
 	this._orientation = 2; /* ROT.DIRS[6] */
 	this._locomotive = null;
@@ -13,29 +13,29 @@ var Train = function() {
 	this._keys[97]	= 4; /* bottom left */
 	this._keys[100]	= 5; /* left */
 }
-Train.extend(Being);
+Game.Train.extend(Game.Being);
 
-Train.prototype.setOrientation = function(orientation) {
+Game.Train.prototype.setOrientation = function(orientation) {
 	this._orientation = orientation;
 	return this;
 }
 
-Train.prototype.setLocomotive = function(locomotive) {
+Game.Train.prototype.setLocomotive = function(locomotive) {
 	this._locomotive = locomotive;
 	return this;
 }
 
-Train.prototype.getLocomotive = function() {
+Game.Train.prototype.getLocomotive = function() {
 	return this._locomotive;
 }
 
-Train.prototype.setColor = function(color) {
+Game.Train.prototype.setColor = function(color) {
 	this._color = color;
 	if (this._position) { Game.display.draw(this._position[0], this._position[1]); }
 	return this;
 }
 
-Train.prototype.act = function() {
+Game.Train.prototype.act = function() {
 	var o = this._orientation;
 
 	/* is there a good target rail? */
@@ -45,7 +45,7 @@ Train.prototype.act = function() {
 	var key = tx+","+ty;
 
 	var being = Game.beings[key];
-	if (being instanceof Train) { return; } /* another train there */
+	if (being instanceof Game.Train) { return; } /* another train there */
 
 	var target = Game.rail[key];
 	if (!target) { return; } /* no rail */
@@ -70,10 +70,10 @@ Train.prototype.act = function() {
 	}
 }
 
-Train.prototype.getChar = function() {
+Game.Train.prototype.getChar = function() {
 	return "t";
 }
 
-Train.prototype.getColor = function() {
+Game.Train.prototype.getColor = function() {
 	return this._color;
 }

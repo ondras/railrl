@@ -58,15 +58,15 @@ var Game = {
 
 		this.engine = new ROT.Engine();
 
-		this.player = new Player();
+		this.player = new Game.Player();
 		this.setBeing(0, 0, this.player);
 		this.engine.addActor(this.player);
 
-		var train = new Train.Locomotive().setOrientation(2);
+		var train = new Game.Train.Locomotive().setOrientation(2);
 		this.setBeing(4, 0, train);
 		this.engine.addActor(train);
 
-		var car = new Train().setOrientation(2);
+		var car = new Game.Train().setOrientation(2);
 		this.setBeing(2, 0, car);
 		train.addCar(car);
 

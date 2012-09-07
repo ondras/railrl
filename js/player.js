@@ -1,5 +1,5 @@
-var Player = function() {
-	Being.call(this);
+Game.Player = function() {
+	Game.Being.call(this);
 
 	this._keys = {};
 	this._keys[103]	= 0; /* top left */
@@ -20,16 +20,16 @@ var Player = function() {
 	this._keys[110]	= -1; /* noop */
 	this._keys[190]	= -1; /* noop */
 }
-Player.extend(Being);
+Game.Player.extend(Game.Being);
 
-Player.prototype.act = function() {
+Game.Player.prototype.act = function() {
 	Game.engine.lock();
 
 	/* wait for input */
 	window.addEventListener("keydown", this);
 }
 
-Player.prototype.handleEvent = function(e) {
+Game.Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
 	if (code in this._keys) {
@@ -50,10 +50,10 @@ Player.prototype.handleEvent = function(e) {
 	}
 }
 
-Player.prototype.getChar = function() {
+Game.Player.prototype.getChar = function() {
 	return "@";
 }
 
-Player.prototype.getColor = function() {
+Game.Player.prototype.getColor = function() {
 	return "#ccc";
 }
