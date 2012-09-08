@@ -1,7 +1,8 @@
 Game.Display = function(options) {
 	var options = {
 		fontSize: 20,
-		layout: "hex"
+		layout: "hex",
+		fontFamily: "monospace"
 	}
 	ROT.Display.call(this, options)
 	this._offset = [0, 0]; /* cell in left-top of canvas */
@@ -36,6 +37,10 @@ Game.Display.prototype.setCenter = function(x, y) {
 	if ((this._offset[0] + this._offset[1]) % 2) { this._offset[0]--; }
 
 	this._dirty = true;
+}
+
+Game.Display.prototype.forceUpdate = function() {
+	this._update();
 }
 
 /**

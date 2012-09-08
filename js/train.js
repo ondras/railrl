@@ -35,7 +35,7 @@ Game.Train.prototype.setColor = function(color) {
 	return this;
 }
 
-Game.Train.prototype.act = function() {
+Game.Train.prototype.move = function() {
 	var o = this._orientation;
 
 	/* is there a good target rail? */
@@ -53,25 +53,25 @@ Game.Train.prototype.act = function() {
 	var opposite = (this._orientation + 3) % 6;
 	if (!(target & Game.Rail.DIRS[opposite])) { return; } /* no rail in our direction */
 
-	/* FIXME destroy being */
+	/* destroy previous being */
+	if (being) { being.die(); }
 
 	Game.setBeing(tx, ty, this);
 
 	/* adjust orientation if necessary */
 	if (!(target & Game.Rail.DIRS[o])) { /* FIXME logic */
+		var options = [];
 		var left = (target & Game.Rail.DIRS[(o+5) % 6]);
 		var right = (target & Game.Rail.DIRS[(o+1) % 6]);
-		if (left) {
-			o = (o+5)%6;
-		} else {
-			o = (o+1)%6;
-		}
-		this._orientation = o;
+		if (left) { options.push((o+5)%6); }
+		if (right) { options.push((o+1)%6); }
+		this._orientation = options.random();
 	}
+
 }
 
 Game.Train.prototype.getChar = function() {
-	return "t";
+	return "o";
 }
 
 Game.Train.prototype.getColor = function() {

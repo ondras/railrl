@@ -1,5 +1,7 @@
 Game.Player = function() {
 	Game.Being.call(this);
+	
+	this._alive = true;
 
 	this._keys = {};
 	this._keys[103]	= 0; /* top left */
@@ -24,29 +26,37 @@ Game.Player.extend(Game.Being);
 
 Game.Player.prototype.act = function() {
 	Game.engine.lock();
-
-	/* wait for input */
-	window.addEventListener("keydown", this);
+	
+	if (this._alive) {
+		/* wait for input */
+		window.addEventListener("keydown", this);
+	} else {
+		Game.display.forceUpdate();
+		alert("Game over");
+	}
 }
 
 Game.Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
-	if (code in this._keys) {
-		code = this._keys[code];
-		if (code == -1) { /* noop */
-			Game.engine.unlock();
-			return;
-		}
-
-		var dir = ROT.DIRS[6][code];
-		var x = this._position[0] + dir[0];
-		var y = this._position[1] + dir[1];
-
-		if (x+","+y in Game.beings) { return; } /* occupied */
-
-		Game.setBeing(x, y, this);
+	if (!(code in this._keys)) { return; } /* not a direction/noop */
+	e.preventDefault();
+	
+	code = this._keys[code];
+	if (code == -1) { /* noop */
+		window.removeEventListener("keydown", this);
 		Game.engine.unlock();
+		return;
+	}
+
+	var dir = ROT.DIRS[6][code];
+	var x = this._position[0] + dir[0];
+	var y = this._position[1] + dir[1];
+
+	if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) {
+		this._tryInteraction(x, y);
+	} else {
+		this._tryMove(x, y);
 	}
 }
 
@@ -56,4 +66,31 @@ Game.Player.prototype.getChar = function() {
 
 Game.Player.prototype.getColor = function() {
 	return "#ccc";
+}
+
+Game.Player.prototype.die = function() {
+	Game.Being.prototype.die.call(this);
+	this._alive = false;
+}
+
+Game.Player.prototype._tryMove = function(x, y) {
+	if (x+","+y in Game.beings) { return; } /* occupied */
+
+	/* move */
+	Game.setBeing(x, y, this);
+	window.removeEventListener("keydown", this);
+	Game.engine.unlock();
+}
+
+Game.Player.prototype._tryInteraction = function(x, y) {
+	window.removeEventListener("keydown", this);
+	new Game.Interaction(x, y, this._endInteraction.bind(this));
+}
+
+Game.Player.prototype._endInteraction = function(success) {
+	if (success) {
+		Game.engine.unlock();
+	} else {
+		window.addEventListener("keydown", this);
+	}
 }

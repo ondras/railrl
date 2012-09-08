@@ -26,3 +26,7 @@ Game.Being.prototype.getPosition = function() {
 Game.Being.prototype.act = function() {
 
 }
+
+Game.Being.prototype.die = function() {
+	Game.removeBeing(this);
+}

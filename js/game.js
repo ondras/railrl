@@ -21,7 +21,8 @@ var Game = {
 	setBeing: function(x, y, being) {
 		var oldPosition = being.getPosition();
 		if (oldPosition) {
-			delete this.beings[oldPosition.join(",")];
+			var oldKey = oldPosition.join(",");
+			if (this.beings[oldKey] == being) { delete this.beings[oldKey]; }
 			this.display.draw(oldPosition[0], oldPosition[1]);
 		}
 
@@ -33,7 +34,15 @@ var Game = {
 
 		if (being == this.player) { this.display.setCenter(x, y); }
 	},
-
+	
+	removeBeing: function(being) {
+		var oldPosition = being.getPosition();
+		if (!oldPosition) { return; }
+		var oldKey = oldPosition.join(",");
+		if (this.beings[oldKey] == being) { delete this.beings[oldKey]; }
+		this.display.draw(oldPosition[0], oldPosition[1]);
+	},
+	
 	init: function() {
 		ROT.DEFAULT_WIDTH = 20;
 		ROT.DEFAULT_HEIGHT = 12;
@@ -48,18 +57,30 @@ var Game = {
 		this.setRail(9, 1, Game.Rail.TYPE_LINE_B);
 		this.setRail(10, 2, Game.Rail.TYPE_CORNER_L);
 		this.setRail(9, 3, Game.Rail.TYPE_LINE_S);
-		this.setRail(8, 4, Game.Rail.TYPE_CORNER_LT);
+		this.setRail(8, 4, Game.Rail.TYPE_CROSS_L);
 		this.setRail(6, 4, Game.Rail.TYPE_LINE_H);
 		this.setRail(4, 4, Game.Rail.TYPE_LINE_H);
-		this.setRail(2, 4, Game.Rail.TYPE_CORNER_RT);
+		this.setRail(2, 4, Game.Rail.TYPE_CROSS_R);
 		this.setRail(1, 3, Game.Rail.TYPE_LINE_B);
 		this.setRail(0, 2, Game.Rail.TYPE_CORNER_R);
 		this.setRail(1, 1, Game.Rail.TYPE_LINE_S);
 
+		this.setRail(9, 5, Game.Rail.TYPE_LINE_B);
+		this.setRail(10, 6, Game.Rail.TYPE_CORNER_L);
+		this.setRail(9, 7, Game.Rail.TYPE_LINE_S);
+		this.setRail(8, 8, Game.Rail.TYPE_CORNER_LT);
+		this.setRail(6, 8, Game.Rail.TYPE_LINE_H);
+		this.setRail(4, 8, Game.Rail.TYPE_LINE_H);
+		this.setRail(2, 8, Game.Rail.TYPE_CORNER_RT);
+		this.setRail(1, 7, Game.Rail.TYPE_LINE_B);
+		this.setRail(0, 6, Game.Rail.TYPE_CORNER_R);
+		this.setRail(1, 5, Game.Rail.TYPE_LINE_S);
+
+
 		this.engine = new ROT.Engine();
 
 		this.player = new Game.Player();
-		this.setBeing(0, 0, this.player);
+		this.setBeing(7, 3, this.player);
 		this.engine.addActor(this.player);
 
 		var train = new Game.Train.Locomotive().setOrientation(2);

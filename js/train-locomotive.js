@@ -11,9 +11,9 @@ Game.Train.Locomotive.prototype.addCar = function(train) {
 }
 
 Game.Train.Locomotive.prototype.act = function() {
-	Game.Train.prototype.act.call(this);
+	this.move();
 	for (var i=0;i<this._cars.length;i++) {
-		this._cars[i].act();
+		this._cars[i].move();
 	}
 }
 
@@ -25,5 +25,5 @@ Game.Train.Locomotive.prototype.setColor = function(color) {
 }
 
 Game.Train.Locomotive.prototype.getChar = function() {
-	return "T";
+	return "O";
 }
