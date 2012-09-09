@@ -2,7 +2,8 @@ Game.Display = function(options) {
 	var options = {
 		fontSize: 20,
 		layout: "hex",
-		fontFamily: "monospace"
+		fontFamily: "droid sans mono",
+		spacing: .9
 	}
 	ROT.Display.call(this, options)
 	this._offset = [0, 0]; /* cell in left-top of canvas */
@@ -86,21 +87,24 @@ Game.Display.prototype._drawCell = function(x, y, clear) {
 		
 	/* rail */
 	var rail = Game.rail[key];
-	if (rail) {
-		this._drawRail(x, y, rail);
-	}
 
 	/* foreground */
 	var being = Game.beings[key];
 	if (being) {
 		this._context.fillStyle = being.getColor();
 		this._context.fillText(being.getChar(), cx, cy);
+	} else if (rail) {
+		this._context.fillStyle = "brown";
+		this._context.fillText("#", cx, cy);
 	} else {
 		this._drawTerrain(x, y, cx, cy);
 	}
 
 }
 
+/**
+ * Obsolete.
+ */
 Game.Display.prototype._drawRail = function(x, y, rail) {
 	this._inCenter = false;
 	var a = this._hexSize;

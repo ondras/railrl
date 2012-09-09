@@ -4,31 +4,25 @@
  * @param {int} y
  * @param {function} callback Interaction end notification
  *   Being: attack?
- *   Train: direction, add/remove car, adjust logic, paint
- *   Rail: change type, remove rail, paint, add train
+ *   Train: direction, add/remove car, adjust logic, paint, name
+ *   Rail: remove rail, paint, add train
  *   Tree: cut down
  *   Water: create paint
  *   Mountain: mine
  *   Empty: build rail
  */
 Game.Interaction = function(x, y, callback) {
-	this._callback = callback;
-	
 	var key = x+","+y;
 	
-	
 	if (Game.beings[key]) {			/* being/train */
-		
-	} else if (Game.rail[key]) {	/* rail */
-	} else { /* terrain */
-		
+		var being = Game.beings[key];
+		if (being instanceof Game.Train) {
+			var locomotive = being.getLocomotive();
+			new Game.Interaction.Train(locomotive, callback);
+		} else {
+			new Game.Interaction.Being(being, callback);
+		}
+	} else {	/* terrain (possibly with rail) */
+		new Game.Interaction.Terrain(x, y, callback);
 	}
-	
-	
-	var list = new Game.List(this._cancel.bind(this));
-	list.show();
-}
-
-Game.Interaction.prototype._cancel = function() {
-	this._callback(false);
 }

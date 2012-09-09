@@ -12,9 +12,9 @@ var Game = {
 	engine: null,
 	player: null,
 
-	setRail: function(x, y, type) {
+	setRail: function(x, y) {
 		var key = x+","+y;
-		this.rail[key] = type;
+		this.rail[key] = true;
 		this.display.draw(x, y);
 	},
 
@@ -44,37 +44,37 @@ var Game = {
 	},
 	
 	init: function() {
-		ROT.DEFAULT_WIDTH = 20;
-		ROT.DEFAULT_HEIGHT = 12;
+		ROT.DEFAULT_WIDTH = 40;
+		ROT.DEFAULT_HEIGHT = 24;
 		this.display = new Game.Display();
 
 		document.body.appendChild(this.display.getContainer());
 
-		this.setRail(2, 0, Game.Rail.TYPE_CORNER_RB);
-		this.setRail(4, 0, Game.Rail.TYPE_LINE_H);
-		this.setRail(6, 0, Game.Rail.TYPE_LINE_H);
-		this.setRail(8, 0, Game.Rail.TYPE_CORNER_LB);
-		this.setRail(9, 1, Game.Rail.TYPE_LINE_B);
-		this.setRail(10, 2, Game.Rail.TYPE_CORNER_L);
-		this.setRail(9, 3, Game.Rail.TYPE_LINE_S);
-		this.setRail(8, 4, Game.Rail.TYPE_CROSS_L);
-		this.setRail(6, 4, Game.Rail.TYPE_LINE_H);
-		this.setRail(4, 4, Game.Rail.TYPE_LINE_H);
-		this.setRail(2, 4, Game.Rail.TYPE_CROSS_R);
-		this.setRail(1, 3, Game.Rail.TYPE_LINE_B);
-		this.setRail(0, 2, Game.Rail.TYPE_CORNER_R);
-		this.setRail(1, 1, Game.Rail.TYPE_LINE_S);
+		this.setRail(2, 0);
+		this.setRail(4, 0);
+		this.setRail(6, 0);
+		this.setRail(8, 0);
+		this.setRail(9, 1);
+		this.setRail(10, 2);
+		this.setRail(9, 3);
+		this.setRail(8, 4);
+		this.setRail(6, 4);
+		this.setRail(4, 4);
+		this.setRail(2, 4);
+		this.setRail(1, 3);
+		this.setRail(0, 2);
+		this.setRail(1, 1);
 
-		this.setRail(9, 5, Game.Rail.TYPE_LINE_B);
-		this.setRail(10, 6, Game.Rail.TYPE_CORNER_L);
-		this.setRail(9, 7, Game.Rail.TYPE_LINE_S);
-		this.setRail(8, 8, Game.Rail.TYPE_CORNER_LT);
-		this.setRail(6, 8, Game.Rail.TYPE_LINE_H);
-		this.setRail(4, 8, Game.Rail.TYPE_LINE_H);
-		this.setRail(2, 8, Game.Rail.TYPE_CORNER_RT);
-		this.setRail(1, 7, Game.Rail.TYPE_LINE_B);
-		this.setRail(0, 6, Game.Rail.TYPE_CORNER_R);
-		this.setRail(1, 5, Game.Rail.TYPE_LINE_S);
+		this.setRail(9, 5);
+		this.setRail(10, 6);
+		this.setRail(9, 7);
+		this.setRail(8, 8);
+		this.setRail(6, 8);
+		this.setRail(4, 8);
+		this.setRail(2, 8);
+		this.setRail(1, 7);
+		this.setRail(0, 6);
+		this.setRail(1, 5);
 
 
 		this.engine = new ROT.Engine();
@@ -87,7 +87,7 @@ var Game = {
 		this.setBeing(4, 0, train);
 		this.engine.addActor(train);
 
-		var car = new Game.Train().setOrientation(2);
+		var car = new Game.Train();
 		this.setBeing(2, 0, car);
 		train.addCar(car);
 

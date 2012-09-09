@@ -4,10 +4,11 @@ Game.List = function(cancelCallback) {
 	this._node = document.createElement("div");
 }
 
-Game.List.prototype.addItem = function(label, callback) {
+Game.List.prototype.addItem = function(label, callback, disabled) {
 	this._items.push({
 		label: label,
-		callback: callback
+		callback: callback,
+		disabled: disabled
 	});
 }
 
@@ -16,7 +17,7 @@ Game.List.prototype.show = function() {
 	
 	for (var i=0;i<this._items.length;i++) {
 		var item = this._items[i];
-		this._buildItem(item.label, i+1);
+		this._buildItem(item.label, i+1, item.disabled);
 	}
 	
 	this._buildItem("Cancel", 0);
@@ -26,13 +27,13 @@ Game.List.prototype.show = function() {
 }
 
 Game.List.prototype.handleEvent = function(e) {
-	
 	var code = e.keyCode;
 	var index = -2;
-	if (code >= 48 && code <= 57) { index = code - 49; }
+	if (code >= 48 && code <= 70) { index = code - 49; }
 	if (code >= 96 && code <= 105) { index = code - 97; }
 	
 	if (index == -2 || index >= this._items.length) { return; } /* invalid key */
+	if (index != -1 && this._items[index].disabled) { return; } /* disabled */
 	
 	window.removeEventListener("keydown", this);
 	this._hide();
@@ -44,9 +45,11 @@ Game.List.prototype.handleEvent = function(e) {
 	}
 }
 
-Game.List.prototype._buildItem = function(label, number) {
+Game.List.prototype._buildItem = function(label, number, disabled) {
 	var p = document.createElement("p");
-	p.innerHTML = number + ". " + label;
+	var str = number.toString(16) + ". " + label;
+	if (disabled) { str += " ("+disabled+")"; }
+	p.innerHTML = str;
 	this._node.appendChild(p);
 }
 
