@@ -15,7 +15,7 @@ Game.Being.prototype.getSpeed = function() {
 }
 
 Game.Being.prototype.setPosition = function(x, y) {
-	this._position = [x, y];
+	this._position = (x === null ? null : [x, y]);
 }
 
 Game.Being.prototype.getPosition = function() {

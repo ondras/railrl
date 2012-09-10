@@ -148,31 +148,37 @@ Game.Display.prototype._drawSegment = function(cx, cy, dx, dy) {
 
 
 Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
-	var ch;
-	var int = Math.round(1000*Math.abs(Math.sin(x*y)));
+	var color, ch;
 
-	var terrain = Game.terrain[x+","+y] || Game.TERRAIN_NONE;
-	switch (terrain) {
-		case Game.TERRAIN_MOUNTAIN:
+	var terrain = Game.terrain.get(x, y);
+	switch (terrain.type) {
+		case Game.Terrain.TYPE_MOUNTAIN:
+			color = "yellow";
 			ch = "*";
 		break;
 
-		case Game.TERRAIN_WATER:
+		case Game.Terrain.TYPE_WATER:
+			color = "#00f"
 			ch = "=";
 		break;
 
-		case Game.TERRAIN_FOREST:
-			ch = "T";
+		case Game.Terrain.TYPE_BRIDGE:
+			color = "goldenrod";
+			ch = "=";
 		break;
 
-		case Game.TERRAIN_NONE:
+		case Game.Terrain.TYPE_TREE:
+			ch = "T";
+			color = "green";
+		break;
+
+		case Game.Terrain.TYPE_LAND:
 			ch = ".";
+			color = "gray";
 			cy -= 4; /* FIXME */
 		break;
-
 	}
 
-	var arr = this._colors[terrain];
-	this._context.fillStyle = arr[int % arr.length];
+	this._context.fillStyle = color;
 	this._context.fillText(ch, cx, cy);
 }

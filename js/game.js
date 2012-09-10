@@ -1,20 +1,21 @@
 var Game = {
-	TERRAIN_NONE:		0,
-	TERRAIN_MOUNTAIN:	1,
-	TERRAIN_FOREST:		2,
-	TERRAIN_WATER:		3,
-
-	terrain: {},
 	rail: {},
 	beings: {},
 
 	display: null,
 	engine: null,
 	player: null,
+	terrain: null,
 
 	setRail: function(x, y) {
 		var key = x+","+y;
 		this.rail[key] = true;
+		this.display.draw(x, y);
+	},
+
+	removeRail: function(x, y) {
+		var key = x+","+y;
+		delete this.rail[key];
 		this.display.draw(x, y);
 	},
 
@@ -28,9 +29,11 @@ var Game = {
 
 		var key = x+","+y;
 		being.setPosition(x, y);
-		this.beings[key] = being;
 
-		this.display.draw(x, y);
+		if (x !== null) {
+			this.beings[key] = being;
+			this.display.draw(x, y);
+		}
 
 		if (being == this.player) { this.display.setCenter(x, y); }
 	},
@@ -46,7 +49,11 @@ var Game = {
 	init: function() {
 		ROT.DEFAULT_WIDTH = 40;
 		ROT.DEFAULT_HEIGHT = 24;
+
 		this.display = new Game.Display();
+		this.engine = new ROT.Engine();
+		this.player = new Game.Player();
+		this.terrain = new Game.Terrain();
 
 		document.body.appendChild(this.display.getContainer());
 
@@ -77,9 +84,7 @@ var Game = {
 		this.setRail(1, 5);
 
 
-		this.engine = new ROT.Engine();
 
-		this.player = new Game.Player();
 		this.setBeing(7, 3, this.player);
 		this.engine.addActor(this.player);
 
@@ -88,7 +93,6 @@ var Game = {
 		this.engine.addActor(train);
 
 		var car = new Game.Train();
-		this.setBeing(2, 0, car);
 		train.addCar(car);
 
 		train.setColor("#f00");

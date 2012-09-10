@@ -1,4 +1,4 @@
-Game.Interaction.Train = function(locomotive, callback) {
+Game.Interaction.Being = function(locomotive, callback) {
 	this._locomotive = locomotive;
 	this._callback = callback;
 	
@@ -10,14 +10,14 @@ Game.Interaction.Train = function(locomotive, callback) {
 	list.show();
 }
 
-Game.Interaction.Train.prototype._cancel = function() {
+Game.Interaction.Being.prototype._cancel = function() {
 	this._callback(false);
 }
 
 /**
- * FIXME schedule as train's next action?
+ * FIXME schedule as Being's next action?
  */
-Game.Interaction.Train.prototype._swap = function() {
+Game.Interaction.Being.prototype._swap = function() {
 	var o = this._locomotive.getOrientation();
 	this._locomotive.setOrientation((o+3) % 6);
 	
@@ -38,13 +38,13 @@ Game.Interaction.Train.prototype._swap = function() {
 	this._callback(true);
 }
 
-Game.Interaction.Train.prototype._add = function() {
+Game.Interaction.Being.prototype._add = function() {
 	this._callback(true);
 }
 
-Game.Interaction.Train.prototype._remove = function() {
+Game.Interaction.Being.prototype._remove = function() {
 	this._callback(true);
 }
 
-Game.Interaction.Train.prototype._logic = function() {
+Game.Interaction.Being.prototype._logic = function() {
 }

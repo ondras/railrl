@@ -11,12 +11,9 @@ Game.Interaction.Train = function(locomotive, callback) {
 }
 
 Game.Interaction.Train.prototype._cancel = function() {
-	this._callback(false);
+	this._callback(Game.Interaction.RESULT_NOOP);
 }
 
-/**
- * FIXME schedule as train's next action?
- */
 Game.Interaction.Train.prototype._swap = function() {
 	var o = this._locomotive.getOrientation();
 	this._locomotive.setOrientation((o+3) % 6);
@@ -35,15 +32,21 @@ Game.Interaction.Train.prototype._swap = function() {
 		Game.setBeing(p1[0], p1[1], second);
 	}
 	
-	this._callback(true);
+	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
+/**
+ * FIXME should adding/removing/swapping result in end turn?
+ */
 Game.Interaction.Train.prototype._add = function() {
-	this._callback(true);
+	var car = new Game.Train();
+	this._locomotive.addCar(car);
+	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
 Game.Interaction.Train.prototype._remove = function() {
-	this._callback(true);
+	this._locomotive.removeLastCar();
+	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
 Game.Interaction.Train.prototype._logic = function() {
