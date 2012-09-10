@@ -167,7 +167,7 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 			ch = "=";
 		break;
 
-		case Game.Terrain.TYPE_TREE:
+		case Game.Terrain.TYPE_FOREST:
 			ch = "T";
 			color = "green";
 		break;
