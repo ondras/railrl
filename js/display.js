@@ -14,6 +14,7 @@ Game.Display = function(options) {
 	this._visible = null;
 
 	setInterval(this._update.bind(this), 1000/25);
+	window.addEventListener("resize", this.resize.bind(this));
 }
 Game.Display.extend(ROT.Display);
 
@@ -29,9 +30,10 @@ Game.Display.prototype.draw = function(x, y) {
 	this._dirty[x+","+y] = [x, y];
 }
 
-Game.Display.prototype.setCenter = function(x, y) {
-	this._offset[1] = y-Math.floor(this._options.height/2);
-	this._offset[0] = x-Math.floor(this._options.width/2);
+Game.Display.prototype.setCenter = function() {
+	var pos = Game.player.getPosition();
+	this._offset[0] = pos[0]-Math.floor(this._options.width/2);
+	this._offset[1] = pos[1]-Math.floor(this._options.height/2);
 
 	if ((this._offset[0] + this._offset[1]) % 2) { this._offset[0]--; }
 
@@ -40,6 +42,17 @@ Game.Display.prototype.setCenter = function(x, y) {
 
 Game.Display.prototype.forceUpdate = function() {
 	this._update();
+}
+
+Game.Display.prototype.resize = function() {
+	var w = window.innerWidth;
+	var h = window.innerHeight;
+	w -= document.querySelector("#column").offsetWidth;
+	this._options.width = Math.floor(w/this._spacingX)-1;
+	this._options.height = Math.floor(h/this._spacingY);
+
+	this._compute();
+	this.setCenter();
 }
 
 /**

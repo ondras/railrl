@@ -1,6 +1,6 @@
 /*
 	This is rot.js, the ROguelike Toolkit in JavaScript.
-	Version 0.2, generated on Tue Sep 11 13:33:13 CEST 2012.
+	Version 0.2, generated on Tue Sep 11 16:21:44 CEST 2012.
 */
 
 /**
@@ -295,6 +295,23 @@ ROT.Display.prototype._fillHex = function(cx, cy) {
 }
 
 ROT.Display.prototype._redraw = function() {
+	this._compute();
+	
+	var data = this._data;
+	this.clear();
+	
+	/* redraw cached data */
+	for (var id in data) {
+		var item = data[id];
+		var parts = id.split(",");
+		this.draw(parseInt(parts[0]), parseInt(parts[1]), item[0], item[1], item[2]);
+	}
+}
+
+/**
+ * Re-compute internal sizing variables, based on current options
+ */
+ROT.Display.prototype._compute = function() {
 	/* compute char width */
 	var font = this._options.fontSize + "px " + this._options.fontFamily;
 	this._context.font = font;
@@ -319,18 +336,7 @@ ROT.Display.prototype._redraw = function() {
 	this._context.font = font;
 	this._context.textAlign = "center";
 	this._context.textBaseline = "middle";
-	
-	var data = this._data;
-	this.clear();
-	
-	/* redraw cached data */
-	for (var id in data) {
-		var item = data[id];
-		var parts = id.split(",");
-		this.draw(parseInt(parts[0]), parseInt(parts[1]), item[0], item[1], item[2]);
-	}
-}
-/**
+}/**
  * @class Speed-based scheduler
  */
 ROT.Scheduler = function() {

@@ -35,7 +35,7 @@ var Game = {
 			this.display.draw(x, y);
 		}
 
-		if (being == this.player) { this.display.setCenter(x, y); }
+		if (being == this.player) { this.display.setCenter(); }
 	},
 	
 	removeBeing: function(being) {
@@ -47,15 +47,15 @@ var Game = {
 	},
 	
 	init: function() {
-		ROT.DEFAULT_WIDTH = 80;
-		ROT.DEFAULT_HEIGHT = 24;
+		this.terrain = new Game.Terrain();
+		this.engine = new ROT.Engine();
 
 		this.display = new Game.Display();
-		this.engine = new ROT.Engine();
-		this.player = new Game.Player();
-		this.terrain = new Game.Terrain();
-
 		document.body.appendChild(this.display.getContainer());
+
+		this.player = new Game.Player();
+		this.setBeing(7, 3, this.player);
+		this.engine.addActor(this.player);
 
 		this.setRail(2, 0);
 		this.setRail(4, 0);
@@ -83,10 +83,9 @@ var Game = {
 		this.setRail(0, 6);
 		this.setRail(1, 5);
 
+		this.display.resize();
 
 
-		this.setBeing(7, 3, this.player);
-		this.engine.addActor(this.player);
 
 		var train = new Game.Train.Locomotive().setOrientation(2);
 		this.setBeing(4, 0, train);

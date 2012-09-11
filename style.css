@@ -1,4 +1,18 @@
+html {
+	height: 100%;
+}
+
 body {
 	margin: 0px;
 	font-family: droid sans mono;
+	background-color: #000;
+	height: 100%;
+	overflow: hidden;
+}
+
+#column {
+	width: 400px;
+	float: right;
+	border-left: 1px solid #ccc;
+	height: 100%;
 }
