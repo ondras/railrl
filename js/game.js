@@ -46,6 +46,12 @@ var Game = {
 		this.display.draw(oldPosition[0], oldPosition[1]);
 	},
 	
+	log: function(text) {
+		var item = document.createElement("p");
+		item.innerHTML = text;
+		document.querySelector("#log").appendChild(item);
+	},
+	
 	init: function() {
 		this.terrain = new Game.Terrain();
 		this.engine = new ROT.Engine();

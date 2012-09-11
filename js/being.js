@@ -1,5 +1,7 @@
 Game.Being = function() {
 	this._position = null;
+	this._name = "";
+	this._speed = 100;
 }
 
 Game.Being.prototype.getColor = function() {
@@ -11,7 +13,11 @@ Game.Being.prototype.getChar = function() {
 }
 
 Game.Being.prototype.getSpeed = function() {
-	return 100;
+	return this._speed;
+}
+
+Game.Being.prototype.getName = function() {
+	return this._name;
 }
 
 Game.Being.prototype.setPosition = function(x, y) {

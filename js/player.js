@@ -2,6 +2,7 @@ Game.Player = function() {
 	Game.Being.call(this);
 	
 	this._alive = true;
+	this._name = "you";
 
 	this._keys = {};
 	this._keys[103]	= 0; /* top left */
@@ -41,7 +42,11 @@ Game.Player.prototype.handleEvent = function(e) {
 
 	if (!(code in this._keys)) { return; } /* not a direction/noop */
 	if (e.ctrlKey) { return; }
+	
 	e.preventDefault();
+
+	/* empty the log */
+	document.querySelector("#log").innerHTML = "";
 	
 	code = this._keys[code];
 	if (code == -1) { /* noop */
@@ -75,10 +80,16 @@ Game.Player.prototype.die = function() {
 }
 
 Game.Player.prototype._tryMove = function(x, y) {
-	if (x+","+y in Game.beings) { return; } /* occupied */
+	if (x+","+y in Game.beings) { /* occupied */
+		Game.log("That place is already occupied!");
+		return;
+	}
 
 	var terrain = Game.terrain.get(x, y);
-	if (terrain.type == Game.Terrain.TYPE_WATER) { return; } /* cannot swim */
+	if (terrain.type == Game.Terrain.TYPE_WATER) { /* cannot swim */
+		Game.log("The water is too deep. Way too deep for your swimming skills.");
+		return; 
+	} 
 
 	/* move */
 	Game.setBeing(x, y, this);

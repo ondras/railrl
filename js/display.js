@@ -15,6 +15,7 @@ Game.Display = function(options) {
 
 	setInterval(this._update.bind(this), 1000/25);
 	window.addEventListener("resize", this.resize.bind(this));
+	window.addEventListener("scroll", function() { document.documentElement.scrollTop = 0; });
 }
 Game.Display.extend(ROT.Display);
 
@@ -186,10 +187,9 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 		break;
 
 		case Game.Terrain.TYPE_LAND:
-			ch = ".";
+			ch = "·";
 			var colors = ["#666", "#960"];
 			color = colors[Math.floor(terrain.amount * colors.length)];
-			cy -= 4; /* FIXME */
 		break;
 	}
 

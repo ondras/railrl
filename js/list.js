@@ -1,7 +1,8 @@
-Game.List = function(cancelCallback) {
+Game.List = function(label, cancelCallback) {
 	this._cancelCallback = cancelCallback;
 	this._items = [];
 	this._node = document.createElement("div");
+	this._node.innerHTML = label;
 }
 
 Game.List.prototype.addItem = function(label, callback, disabled) {
@@ -22,8 +23,7 @@ Game.List.prototype.show = function() {
 	
 	this._buildItem("Cancel", 0);
 	
-	
-	document.body.appendChild(this._node);
+	document.querySelector("#log").appendChild(this._node);
 }
 
 Game.List.prototype.handleEvent = function(e) {
@@ -47,7 +47,15 @@ Game.List.prototype.handleEvent = function(e) {
 
 Game.List.prototype._buildItem = function(label, number, disabled) {
 	var p = document.createElement("p");
-	var str = number.toString(16) + ". " + label;
+	var str = "";
+	if (number == 0) {
+		str += "<em class='cancel'>"; 
+	} else if (!disabled) { 
+		str += "<em>"; 
+	}
+	str += number.toString(16);
+	if (!disabled) { str += "</em>"; }
+	str += ". " + label;
 	if (disabled) { str += " ("+disabled+")"; }
 	p.innerHTML = str;
 	this._node.appendChild(p);

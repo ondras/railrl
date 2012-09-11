@@ -2,12 +2,32 @@ Game.Interaction.Train = function(locomotive, callback) {
 	this._locomotive = locomotive;
 	this._callback = callback;
 	
-	var list = new Game.List(this._cancel.bind(this));
+	this._speeds = {
+		slow: 75,
+		normal: 100,
+		fast: 150
+	}
+	
+	this._build();
+}
+
+Game.Interaction.Train.prototype._build = function() {
+	var label = this._getLabel();
+	var list = new Game.List(label, this._cancel.bind(this));
 	list.addItem("Change orientation", this._swap.bind(this));
 	list.addItem("Add car", this._add.bind(this));
 	list.addItem("Remove car", this._remove.bind(this), (this._locomotive.getCars().length ? null : "no car available"));
-	list.addItem("Adjust logic", this._logic.bind(this));
+	list.addItem("Adjust speed", this._speed.bind(this));
+	list.addItem("Adjust logic", this._logic.bind(this), "not implemented");
 	list.show();
+}
+
+Game.Interaction.Train.prototype._getLabel = function() {
+	var count = this._locomotive.getCars().length;
+	var str = "You are looking at a train. There is a locomotive and ";
+	str += count + " car" + (count == 1 ? "" : "s") + ". It's current speed is ";
+	str += this._locomotive.getSpeed() + ".";
+	return str;
 }
 
 Game.Interaction.Train.prototype._cancel = function() {
@@ -51,3 +71,28 @@ Game.Interaction.Train.prototype._remove = function() {
 
 Game.Interaction.Train.prototype._logic = function() {
 }
+
+Game.Interaction.Train.prototype._speed = function() {
+	var label = "The train's current speed is " + this._locomotive.getSpeed() + ".";
+	var list = new Game.List(label, this._build.bind(this));
+	list.addItem("Set speed to slow ("+this._speeds.slow + ")", this._speedSlow.bind(this));
+	list.addItem("Set speed to normal ("+this._speeds.normal + ")", this._speedNormal.bind(this));
+	list.addItem("Set speed to fast ("+this._speeds.fast + ")", this._speedFast.bind(this));
+	list.show();
+}
+
+Game.Interaction.Train.prototype._speedSlow = function() {
+	this._locomotive.setSpeed(this._speeds.slow);
+	this._build();
+}
+
+Game.Interaction.Train.prototype._speedNormal = function() {
+	this._locomotive.setSpeed(this._speeds.normal);
+	this._build();
+}
+
+Game.Interaction.Train.prototype._speedFast = function() {
+	this._locomotive.setSpeed(this._speeds.fast);
+	this._build();
+}
+

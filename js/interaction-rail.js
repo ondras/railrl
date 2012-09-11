@@ -3,10 +3,16 @@ Game.Interaction.Rail = function(x, y, callback) {
 	this._y = y;
 	this._callback = callback;
 	
-	var list = new Game.List(this._cancel.bind(this));
+	var label = this._getLabel();
+	var list = new Game.List(label, this._cancel.bind(this));
 	list.addItem("Remove rail", this._removeRail.bind(this));
 	list.addItem("Add new train", this._addTrain.bind(this), "not implemented");
 	list.show();
+}
+
+Game.Interaction.Rail.prototype._getLabel = function() {
+	var str = "You are looking at a rail section. This is a suitable place for a new train.";
+	return str;
 }
 
 Game.Interaction.Rail.prototype._cancel = function() {

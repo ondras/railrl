@@ -3,6 +3,7 @@ Game.Train.Locomotive = function() {
 	this._cars = [];
 	this._locomotive = this;
 	this._orientation = 2; /* ROT.DIRS[6] */
+	this._speed = 100;
 }
 Game.Train.Locomotive.extend(Game.Train);
 
@@ -59,7 +60,7 @@ Game.Train.Locomotive.prototype.getCars = function() {
 Game.Train.Locomotive.prototype.removeLastCar = function() {
 	var car = this._cars.pop();
 	car.setLocomotive(null);
-	Game.removeBeing(null, null);
+	Game.removeBeing(car);
 }
 
 Game.Train.Locomotive.prototype.setOrientation = function(orientation) {
@@ -69,6 +70,11 @@ Game.Train.Locomotive.prototype.setOrientation = function(orientation) {
 
 Game.Train.Locomotive.prototype.getOrientation = function() {
 	return this._orientation;
+}
+
+Game.Train.Locomotive.prototype.setSpeed = function(speed) {
+	this._speed = speed;
+	return this;
 }
 
 Game.Train.Locomotive.prototype.act = function() {
@@ -112,8 +118,14 @@ Game.Train.Locomotive.prototype._move = function() {
 	var being = Game.beings[key];
 	if (being instanceof Game.Train) { return false; } /* another train there */
 
-	/* destroy previous being */
-	if (being) { being.die(); }
+	if (being) { /* destroy previous being */
+		var str = "A train runs over ";
+		if (being != Game.player) { str += "a "; }
+		str += being.getName();
+		str += "!";
+		Game.log(str);
+		being.die(); 
+	}
 
 	Game.setBeing(tx, ty, this);
 	return true;
