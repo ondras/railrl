@@ -6,7 +6,7 @@ Game.Terrain = function() {
 
 	this._noTrees = {};
 	this._bridges = {};
-	this._waterThreshold = 0.08;
+	this._waterThreshold = 0.06;
 	this._mountainThreshold = 0.7;
 	this._forestThreshold = 0.4;
 }
@@ -29,7 +29,7 @@ Game.Terrain.prototype.get = function(x, y) {
 		return result;
 	}
 
-	var water = this._noise.water.get(x/50, y/50);
+	var water = this._noise.water.get(x/60, y/60);
 	if (Math.abs(water) < this._waterThreshold) {
 		result.type = Game.Terrain.TYPE_WATER;
 	} else {
@@ -37,12 +37,30 @@ Game.Terrain.prototype.get = function(x, y) {
 		
 		if (height > this._mountainThreshold) {
 			result.type = Game.Terrain.TYPE_MOUNTAIN;
+			result.amount = (height-this._mountainThreshold) / (1-this._mountainThreshold);
 		} else if (height > this._forestThreshold && !(key in this._noTrees)) {
 			result.type = Game.Terrain.TYPE_FOREST;
+			result.amount = (height-this._forestThreshold)/(this._mountainThreshold-this._forestThreshold);
 		} else {
 			result.type = Game.Terrain.TYPE_LAND;
+			result.amount = (height+1)/(1+this._mountainThreshold);
 		}
 	}
 	
 	return result;
+}
+
+Game.Terrain.prototype.setBridge = function(x, y) {
+	this._bridges[x+","+y] = true;
+	Game.display.draw(x, y);
+}
+
+Game.Terrain.prototype.removeBridge = function(x, y) {
+	delete this._bridges[x+","+y];
+	Game.display.draw(x, y);
+}
+
+Game.Terrain.prototype.cutTree = function(x, y) {
+	this._noTrees[x+","+y] = true;
+	Game.display.draw(x, y);
 }

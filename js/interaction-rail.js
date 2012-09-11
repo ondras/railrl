@@ -5,6 +5,7 @@ Game.Interaction.Rail = function(x, y, callback) {
 	
 	var list = new Game.List(this._cancel.bind(this));
 	list.addItem("Remove rail", this._removeRail.bind(this));
+	list.addItem("Add new train", this._addTrain.bind(this), "not implemented");
 	list.show();
 }
 
@@ -15,4 +16,8 @@ Game.Interaction.Rail.prototype._cancel = function() {
 Game.Interaction.Rail.prototype._removeRail = function() {
 	Game.removeRail(this._x, this._y);
 	this._callback(Game.Interaction.RESULT_END_TURN);
+}
+
+Game.Interaction.Rail.prototype._addTrain = function() {
+	this._callback(Game.Interaction.RESULT_AGAIN);
 }

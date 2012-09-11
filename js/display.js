@@ -8,12 +8,6 @@ Game.Display = function(options) {
 	ROT.Display.call(this, options)
 	this._offset = [0, 0]; /* cell in left-top of canvas */
 
-	this._colors = {};
-	this._colors[Game.TERRAIN_MOUNTAIN] = ["#ff0", "#fc0", "#cf0", "#f80", "#8f0"];
-	this._colors[Game.TERRAIN_FOREST] = ["#0f0", "#0c0", "#0a0"];
-	this._colors[Game.TERRAIN_WATER] = ["#00f", "#00c", "#00a"];
-	this._colors[Game.TERRAIN_NONE] = ["#333", "#666", "#999", "#ccc"];
-
 	this._sqrt32 = Math.sqrt(3)/2;
 	this._dirty = true; /* true = all; object = list of dirty cells */
 
@@ -26,7 +20,11 @@ Game.Display.extend(ROT.Display);
 Game.Display.prototype.draw = function(x, y) {
 	if (this._dirty === true) { return; }
 
-	/* FIXME check outside visibility range */
+	/* in visiblity range? */
+	var dx = x-this._offset[0];
+	var dy = y-this._offset[1];
+	if (dx < -1 || dy < -1 || dx > this._options.width + 1 || dy > this._options.height + 1) { return; }
+
 	if (!this._dirty) { this._dirty = {}; }
 	this._dirty[x+","+y] = [x, y];
 }
@@ -153,28 +151,31 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 	var terrain = Game.terrain.get(x, y);
 	switch (terrain.type) {
 		case Game.Terrain.TYPE_MOUNTAIN:
-			color = "yellow";
 			ch = "*";
+			var colors = ["#d99", "#ff3", "#ccc", "#fff"];
+			color = colors[Math.floor(terrain.amount * colors.length)];
 		break;
 
 		case Game.Terrain.TYPE_WATER:
-			color = "#00f"
 			ch = "=";
+			color = "#00f"
 		break;
 
 		case Game.Terrain.TYPE_BRIDGE:
-			color = "goldenrod";
 			ch = "=";
+			color = "goldenrod";
 		break;
 
 		case Game.Terrain.TYPE_FOREST:
-			ch = "T";
-			color = "green";
+			var chars = ["t", "T"];
+			ch = chars[Math.floor(terrain.amount * chars.length)];
+			color = "#090";
 		break;
 
 		case Game.Terrain.TYPE_LAND:
 			ch = ".";
-			color = "gray";
+			var colors = ["#666", "#960"];
+			color = colors[Math.floor(terrain.amount * colors.length)];
 			cy -= 4; /* FIXME */
 		break;
 	}

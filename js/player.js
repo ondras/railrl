@@ -40,6 +40,7 @@ Game.Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
 	if (!(code in this._keys)) { return; } /* not a direction/noop */
+	if (e.ctrlKey) { return; }
 	e.preventDefault();
 	
 	code = this._keys[code];
@@ -53,7 +54,7 @@ Game.Player.prototype.handleEvent = function(e) {
 	var x = this._position[0] + dir[0];
 	var y = this._position[1] + dir[1];
 
-	if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) {
+	if (e.altKey || e.shiftKey || e.metaKey) {
 		this._tryInteraction(x, y);
 	} else {
 		this._tryMove(x, y);
@@ -75,6 +76,9 @@ Game.Player.prototype.die = function() {
 
 Game.Player.prototype._tryMove = function(x, y) {
 	if (x+","+y in Game.beings) { return; } /* occupied */
+
+	var terrain = Game.terrain.get(x, y);
+	if (terrain.type == Game.Terrain.TYPE_WATER) { return; } /* cannot swim */
 
 	/* move */
 	Game.setBeing(x, y, this);

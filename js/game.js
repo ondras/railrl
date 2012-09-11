@@ -47,7 +47,7 @@ var Game = {
 	},
 	
 	init: function() {
-		ROT.DEFAULT_WIDTH = 40;
+		ROT.DEFAULT_WIDTH = 80;
 		ROT.DEFAULT_HEIGHT = 24;
 
 		this.display = new Game.Display();
