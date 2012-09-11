@@ -87,7 +87,7 @@ Game.Player.prototype._tryMove = function(x, y) {
 
 	var terrain = Game.terrain.get(x, y);
 	if (terrain.type == Game.Terrain.TYPE_WATER) { /* cannot swim */
-		Game.log("The water is too deep. Way too deep for your swimming skills.");
+		Game.log("The water is deep. Way too deep for your swimming skills.");
 		return; 
 	} 
 

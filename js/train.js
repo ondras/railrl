@@ -2,9 +2,20 @@ Game.Train = function() {
 	Game.Being.call(this);
 
 	this._locomotive = null;
-	this._color = "#ccc";
+	this._color = Game.Train.COLORS.gray;
 }
 Game.Train.extend(Game.Being);
+
+Game.Train.COLORS = {
+	gray: "#999",
+	red: "#f00",
+	green: "#0f0",
+	blue: "#00f",
+	yellow: "#ff0",
+	cyan: "#0ff",
+	magenta: "#f0f",
+	white: "#fff"
+}
 
 Game.Train.prototype.setLocomotive = function(locomotive) {
 	this._locomotive = locomotive;

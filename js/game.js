@@ -93,14 +93,12 @@ var Game = {
 
 
 
-		var train = new Game.Train.Locomotive().setOrientation(2);
+		var train = new Game.Train.Locomotive();
 		this.setBeing(4, 0, train);
 		this.engine.addActor(train);
 
 		var car = new Game.Train();
 		train.addCar(car);
-
-		train.setColor("#f00");
 
 		this.engine.start();
 	}

@@ -17,6 +17,7 @@ Game.Interaction.Train.prototype._build = function() {
 	list.addItem("Change orientation", this._swap.bind(this));
 	list.addItem("Add car", this._add.bind(this));
 	list.addItem("Remove car", this._remove.bind(this), (this._locomotive.getCars().length ? null : "no car available"));
+	list.addItem("Adjust color", this._color.bind(this));
 	list.addItem("Adjust speed", this._speed.bind(this));
 	list.addItem("Adjust logic", this._logic.bind(this), "not implemented");
 	list.show();
@@ -72,27 +73,34 @@ Game.Interaction.Train.prototype._remove = function() {
 Game.Interaction.Train.prototype._logic = function() {
 }
 
-Game.Interaction.Train.prototype._speed = function() {
-	var label = "The train's current speed is " + this._locomotive.getSpeed() + ".";
+Game.Interaction.Train.prototype._color = function() {
+	var label = "Paint the train:";
 	var list = new Game.List(label, this._build.bind(this));
-	list.addItem("Set speed to slow ("+this._speeds.slow + ")", this._speedSlow.bind(this));
-	list.addItem("Set speed to normal ("+this._speeds.normal + ")", this._speedNormal.bind(this));
-	list.addItem("Set speed to fast ("+this._speeds.fast + ")", this._speedFast.bind(this));
+	for (var name in Game.Train.COLORS) {
+		var color = Game.Train.COLORS[name];
+		var str = "<span style='color:" + color + "'>" + name + "</span>";
+		list.addItem(str, this._colorChange.bind(this, color));
+	}
 	list.show();
 }
 
-Game.Interaction.Train.prototype._speedSlow = function() {
-	this._locomotive.setSpeed(this._speeds.slow);
+Game.Interaction.Train.prototype._colorChange = function(color) {
+	this._locomotive.setColor(color);
 	this._build();
 }
 
-Game.Interaction.Train.prototype._speedNormal = function() {
-	this._locomotive.setSpeed(this._speeds.normal);
+Game.Interaction.Train.prototype._speed = function() {
+	var label = "The train's current speed is " + this._locomotive.getSpeed() + ".";
+	var list = new Game.List(label, this._build.bind(this));
+	list.addItem("Set speed to slow ("+this._speeds.slow + ")", this._speedChange.bind(this, this._speeds.slow));
+	list.addItem("Set speed to normal ("+this._speeds.normal + ")", this._speedChange.bind(this, this._speeds.normal));
+	list.addItem("Set speed to fast ("+this._speeds.fast + ")", this._speedChange.bind(this, this._speeds.fast));
+	list.show();
+}
+
+Game.Interaction.Train.prototype._speedChange = function(speed) {
+	this._locomotive.setSpeed(speed);
 	this._build();
 }
 
-Game.Interaction.Train.prototype._speedFast = function() {
-	this._locomotive.setSpeed(this._speeds.fast);
-	this._build();
-}
 
