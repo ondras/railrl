@@ -22,7 +22,7 @@ Game.Interaction.Terrain = function(x, y, callback) {
 		case Game.Terrain.TYPE_WATER:
 			var disabled = (Game.player.getItem(Game.ITEM_WOOD) > 0 ? null : "wood needed");
 			list.addItem("Build bridge", this._buildBridge.bind(this), disabled);
-			list.addItem("Get water", this._getWater.bind(this));
+			list.addItem("Scoop water", this._getWater.bind(this));
 		break;
 
 		case Game.Terrain.TYPE_BRIDGE:
@@ -102,7 +102,7 @@ Game.Interaction.Terrain.prototype._removeBridge = function() {
 Game.Interaction.Terrain.prototype._getWater = function() {
 	var amount = 1;
 	Game.player.adjustItem(Game.ITEM_WATER, amount);
-	Game.log("You got " + amount + " piece of water.");
+	Game.log("You scoop " + amount + " bottle of water.");
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
 

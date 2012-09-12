@@ -61,6 +61,7 @@ var Game = {
 		this.engine = new ROT.Engine();
 		this.display = new Game.Display();
 		this.player = new Game.Player();
+		this.engine.addActor(this.player);
 
 		this._intro();
 	},
@@ -74,44 +75,50 @@ var Game = {
 		intro.parentNode.removeChild(intro);
 		document.body.appendChild(this.display.getContainer());
 
-		this.setBeing(7, 3, this.player);
-		this.engine.addActor(this.player);
-
-		this.setRail(2, 0);
-		this.setRail(4, 0);
-		this.setRail(6, 0);
-		this.setRail(8, 0);
-		this.setRail(9, 1);
-		this.setRail(10, 2);
-		this.setRail(9, 3);
-		this.setRail(8, 4);
-		this.setRail(6, 4);
-		this.setRail(4, 4);
-		this.setRail(2, 4);
-		this.setRail(1, 3);
-		this.setRail(0, 2);
-		this.setRail(1, 1);
-
-		this.setRail(9, 5);
-		this.setRail(10, 6);
-		this.setRail(9, 7);
-		this.setRail(8, 8);
-		this.setRail(6, 8);
-		this.setRail(4, 8);
-		this.setRail(2, 8);
-		this.setRail(1, 7);
-		this.setRail(0, 6);
-		this.setRail(1, 5);
-
+		/* find initial position */
+		var pos = [0, 0];
+		while (Game.terrain.get(pos[0], pos[1]).type == Game.Terrain.TYPE_WATER) { 
+			pos[0] += 1;
+			pos[1] += 1;
+		}
+		this.setBeing(pos[0], pos[1], this.player);
 		this.display.resize();
 
+		/* build sample rail */
+		this._railFromTemplate(pos[0], pos[1], [
+			"  # # # # #",
+			" #         #",
+			"#           #",
+			" #         #",
+			"  # # # # #",
+			" #         #",
+			"#           #",
+			" #         #",
+			"  # # # # #"
+		]);
+
 		var train = new Game.Train.Locomotive();
-		this.setBeing(4, 0, train);
+		this.setBeing(pos[0] + 8, pos[1], train);
 		this.engine.addActor(train);
 
-		var car = new Game.Train();
-		train.addCar(car);
+		train.addCar(new Game.Train());
+		train.addCar(new Game.Train());
 
 		this.engine.start();
+	},
+
+	_railFromTemplate: function(x, y, template) {
+		for (var j=0;j<template.length;j++) {
+			var row = template[j];
+			for (var i=0;i<row.length;i++) {
+				var ch = row.charAt(i);
+				if (ch == " ") { continue; }
+				var cx = x+i;
+				var cy = y+j;
+				var terrain = Game.terrain.get(cx, cy);
+				if (terrain.type == Game.Terrain.TYPE_WATER) { Game.terrain.setBridge(cx, cy); }
+				this.setRail(cx, cy);
+			}
+		}
 	}
 }
