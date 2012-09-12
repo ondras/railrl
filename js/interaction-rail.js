@@ -34,12 +34,24 @@ Game.Interaction.Rail.prototype._removeRail = function() {
 
 Game.Interaction.Rail.prototype._addTrain = function() {
 	var train = new Game.Train.Locomotive();
+	Game.setBeing(this._x, this._y, train);
 	
 	Game.player.adjustItem(Game.ITEM_WOOD, -2);
 	Game.player.adjustItem(Game.ITEM_IRON, -2);
 
-	/* FIXME orientation */
-	Game.setBeing(this._x, this._y, train);
+	/* orientation towards an empty rail */
+	var dirs = ROT.DIRS[6];
+	for (var i=0;i<dirs.length;i++) {
+		var dir = dirs[i];
+		var x = this._x + dir[0];
+		var y = this._y + dir[1];
+		var key = x+","+y;
+		if (Game.rail[key] && !Game.beings[key]) {
+			train.setOrientation(i);
+			break;
+		}
+	}
+
 	Game.engine.addActor(train);
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }

@@ -38,9 +38,19 @@ Game.Interaction.Train.prototype._build = function() {
 }
 
 Game.Interaction.Train.prototype._getLabel = function() {
-	var count = this._locomotive.getCars().length;
-	var str = "You are looking at a train. There is a locomotive and ";
-	str += count + " car" + (count == 1 ? "" : "s") + ". It's current speed is ";
+	var orientation = this._locomotive.getOrientation();
+	var labels = {};
+	labels[0] = "north-west";
+	labels[1] = "north-east";
+	labels[2] = "east";
+	labels[3] = "south-east";
+	labels[4] = "south-west";
+	labels[5] = "west";
+
+	var count = this._locomotive.getCars().length + 1;
+	var str = "You are looking at a train ("+count+" vehicle" + (count > 1 ? "s" : "") + "). ";
+	str += " It is currently oriented towards " + labels[orientation] + ".";
+	str += " It's current speed is ";
 	str += this._locomotive.getSpeed() + ".";
 	return str;
 }
