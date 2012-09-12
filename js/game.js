@@ -55,11 +55,21 @@ var Game = {
 	init: function() {
 		this.terrain = new Game.Terrain();
 		this.engine = new ROT.Engine();
-
 		this.display = new Game.Display();
+		this.player = new Game.Player();
+
+		this._intro();
+	},
+
+	_intro: function() {
+		document.querySelector("#intro").addEventListener("click", this._start.bind(this));
+	},
+
+	_start: function() {
+		var intro = document.querySelector("#intro");
+		intro.parentNode.removeChild(intro);
 		document.body.appendChild(this.display.getContainer());
 
-		this.player = new Game.Player();
 		this.setBeing(7, 3, this.player);
 		this.engine.addActor(this.player);
 
@@ -91,8 +101,6 @@ var Game = {
 
 		this.display.resize();
 
-
-
 		var train = new Game.Train.Locomotive();
 		this.setBeing(4, 0, train);
 		this.engine.addActor(train);
@@ -101,5 +109,5 @@ var Game = {
 		train.addCar(car);
 
 		this.engine.start();
-	}
+	},
 }

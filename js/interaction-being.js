@@ -8,5 +8,5 @@ Game.Interaction.Being = function(being, callback) {
 }
 
 Game.Interaction.Being.prototype._cancel = function() {
-	this._callback(false);
+	this._callback(Game.Interaction.RESULT_NOOP);
 }

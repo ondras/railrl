@@ -44,26 +44,26 @@ Game.Player.prototype.handleEvent = function(e) {
 	if (e.ctrlKey) { return; }
 	
 	e.preventDefault();
-
-	/* empty the log */
-	document.querySelector("#log").innerHTML = "";
-	
+	document.querySelector("#log").innerHTML = ""; /* empty the log */
 	code = this._keys[code];
-	if (code == -1) { /* noop */
-		window.removeEventListener("keydown", this);
-		Game.engine.unlock();
-		return;
-	}
 
-	var dir = ROT.DIRS[6][code];
+	var dir = (code == -1 ? [0,0] : ROT.DIRS[6][code]);
 	var x = this._position[0] + dir[0];
 	var y = this._position[1] + dir[1];
 
-	if (e.altKey || e.shiftKey || e.metaKey) {
+	if (e.altKey || e.metaKey) { /* modifiers -> interation */
 		this._tryInteraction(x, y);
-	} else {
+	} else { /* no modifiers -> movement/noop */
+		if (code == -1) { /* noop */
+			window.removeEventListener("keydown", this);
+			Game.engine.unlock();
+			return;
+		}
 		this._tryMove(x, y);
 	}
+
+
+
 }
 
 Game.Player.prototype.getChar = function() {

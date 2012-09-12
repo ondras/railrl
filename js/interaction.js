@@ -3,13 +3,6 @@
  * @param {int} x
  * @param {int} y
  * @param {function} callback Interaction end notification
- *   Being: attack?
- *   Train: direction, add/remove car, adjust logic, paint, name
- *   Rail: remove rail, paint, add train
- *   Tree: cut down
- *   Water: create paint
- *   Mountain: mine
- *   Empty: build rail
  */
 Game.Interaction = function(x, y, callback) {
 	this._x = x;
@@ -28,6 +21,8 @@ Game.Interaction.prototype._build = function() {
 		if (being instanceof Game.Train) {
 			var locomotive = being.getLocomotive();
 			new Game.Interaction.Train(locomotive, result);
+		} else if (being == Game.player) {
+			new Game.Interaction.Player(result);
 		} else {
 			new Game.Interaction.Being(being, result);
 		}
