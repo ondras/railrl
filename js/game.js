@@ -109,5 +109,5 @@ var Game = {
 		train.addCar(car);
 
 		this.engine.start();
-	},
+	}
 }
