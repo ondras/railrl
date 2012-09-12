@@ -6,7 +6,15 @@ Game.Interaction.Rail = function(x, y, callback) {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
 	list.addItem("Remove rail", this._removeRail.bind(this));
-	list.addItem("Add new train", this._addTrain.bind(this));
+
+	var trainDisabled = [];
+	var wood = Game.player.getItem(Game.ITEM_WOOD);
+	var iron = Game.player.getItem(Game.ITEM_IRON);
+	if (wood < 2) { trainDisabled.push("2 wood"); }
+	if (iron < 2) { trainDisabled.push("2 iron"); }
+	trainDisabled = (trainDisabled.length ? trainDisabled.join(" &amp; ") + " needed" : null);
+	list.addItem("Add new train", this._addTrain.bind(this), trainDisabled);
+	
 	list.show();
 }
 
@@ -26,6 +34,10 @@ Game.Interaction.Rail.prototype._removeRail = function() {
 
 Game.Interaction.Rail.prototype._addTrain = function() {
 	var train = new Game.Train.Locomotive();
+	
+	Game.player.adjustItem(Game.ITEM_WOOD, -2);
+	Game.player.adjustItem(Game.ITEM_IRON, -2);
+
 	/* FIXME orientation */
 	Game.setBeing(this._x, this._y, train);
 	Game.engine.addActor(train);

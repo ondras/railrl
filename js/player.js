@@ -3,6 +3,10 @@ Game.Player = function() {
 	
 	this._alive = true;
 	this._name = "you";
+	this._items = {};
+	this._dom = {
+		items: {}
+	}
 
 	this._keys = {};
 	this._keys[103]	= 0; /* top left */
@@ -22,6 +26,8 @@ Game.Player = function() {
 	this._keys[101]	= -1; /* noop */
 	this._keys[110]	= -1; /* noop */
 	this._keys[190]	= -1; /* noop */
+
+	this._build();
 }
 Game.Player.extend(Game.Being);
 
@@ -35,6 +41,21 @@ Game.Player.prototype.act = function() {
 		Game.display.forceUpdate();
 		alert("Game over");
 	}
+}
+
+Game.Player.prototype.getItem = function(item) {
+	return (this._items[item] || 0);
+}
+
+Game.Player.prototype.setItem = function(item, count) {
+	this._items[item] = count;
+	this._updateItem(item);
+	return this;
+}
+
+Game.Player.prototype.adjustItem = function(item, diff) {
+	this.setItem(item, this.getItem(item) + diff);
+	return this;
 }
 
 Game.Player.prototype.handleEvent = function(e) {
@@ -108,4 +129,45 @@ Game.Player.prototype._endInteraction = function(success) {
 	} else {
 		window.addEventListener("keydown", this);
 	}
+}
+
+Game.Player.prototype._updateItem = function(item) {
+	this._dom.items[item].innerHTML = this.getItem(item);
+}
+
+Game.Player.prototype._build = function() {
+	var t = document.createElement("table");
+
+	var row = document.createElement("tr");
+	t.appendChild(row);
+	row.appendChild(this._buildItem(Game.ITEM_WOOD));
+	row.appendChild(this._buildItem(Game.ITEM_WATER));
+
+	var row = document.createElement("tr");
+	t.appendChild(row);
+	row.appendChild(this._buildItem(Game.ITEM_IRON));
+	row.appendChild(document.createElement("td"));
+
+	document.querySelector("#status").appendChild(t);
+}
+
+Game.Player.prototype._buildItem = function(item) {
+	var def = Game.Items[item];
+	var td = document.createElement("td");
+	td.title = def.name;
+
+	var ch = document.createElement("span");
+	ch.style.color = def.color;
+	ch.innerHTML = def.ch;
+	td.appendChild(ch);
+
+	var count = document.createElement("span");
+	this._dom.items[item] = count;
+	td.appendChild(count);
+
+	td.appendChild(document.createTextNode("×"));
+
+	this._updateItem(item);
+
+	return td;
 }

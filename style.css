@@ -20,21 +20,39 @@ body {
 	padding: .5em;
 }
 
-#column p {
+#log p {
 	margin: .2em 0;
 }
 
-#column p:first-child {
-	margin-top: .5em;
+#log p:first-child {
+	margin-bottom: .5em;
 }
 
-#column em {
+#log em {
 	color: #fff;
 	font-style: normal;
 }
 
-#column em.cancel {
+#log em.cancel {
 	color: #c00;
+}
+
+#status {
+	border-bottom: 2px solid #666;
+	height: 10em;
+}
+
+#status p {
+	text-align: center;
+	margin-top: 0.5em;
+}
+
+#status table {
+	width: 100%;
+}
+
+#status td span:first-child {
+	margin-right: 0.5em;
 }
 
 #intro {
@@ -51,8 +69,9 @@ body {
 	line-height: 130%;
 }
 
-#intro strong {
+#intro em {
 	color: #fff;
+	font-style: normal;
 }
 
 #intro a {

@@ -1,4 +1,8 @@
 var Game = {
+	ITEM_WOOD:	0,
+	ITEM_IRON:	1,
+	ITEM_WATER:	2,
+
 	rail: {},
 	beings: {},
 

@@ -15,9 +15,23 @@ Game.Interaction.Train.prototype._build = function() {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
 	list.addItem("Change orientation", this._swap.bind(this));
-	list.addItem("Add car", this._add.bind(this));
-	list.addItem("Remove car", this._remove.bind(this), (this._locomotive.getCars().length ? null : "no car available"));
-	list.addItem("Adjust color", this._color.bind(this));
+
+	var trainDisabled = [];
+	var wood = Game.player.getItem(Game.ITEM_WOOD);
+	var iron = Game.player.getItem(Game.ITEM_IRON);
+	if (wood < 2) { trainDisabled.push("2 wood"); }
+	if (iron < 2) { trainDisabled.push("2 iron"); }
+	trainDisabled = (trainDisabled.length ? trainDisabled.join(" &amp; ") + " needed" : null);
+	list.addItem("Add car", this._addCar.bind(this), trainDisabled);
+
+	if (this._locomotive.getCars().length) {
+		list.addItem("Remove car", this._removeCar.bind(this));
+	} else {
+		list.addItem("Destroy train", this._removeTrain.bind(this));
+	}
+
+	var disabled = (Game.player.getItem(Game.ITEM_WATER) ? null : "water needed");
+	list.addItem("Adjust color", this._color.bind(this), disabled);
 	list.addItem("Adjust speed", this._speed.bind(this));
 	list.addItem("Adjust logic", this._logic.bind(this), "not implemented");
 	list.show();
@@ -53,20 +67,33 @@ Game.Interaction.Train.prototype._swap = function() {
 		Game.setBeing(p1[0], p1[1], second);
 	}
 	
+	Game.log("You change the train's orientation.");
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
 /**
  * FIXME should adding/removing/swapping result in end turn?
  */
-Game.Interaction.Train.prototype._add = function() {
+Game.Interaction.Train.prototype._addCar = function() {
 	var car = new Game.Train();
 	this._locomotive.addCar(car);
+
+	Game.player.adjustItem(Game.ITEM_WOOD, -2);
+	Game.player.adjustItem(Game.ITEM_IRON, -2);
+
+	Game.log("You construct and add a new car.");
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
-Game.Interaction.Train.prototype._remove = function() {
+Game.Interaction.Train.prototype._removeCar = function() {
 	this._locomotive.removeLastCar();
+	Game.log("You remove the last train car.");
+	this._callback(Game.Interaction.RESULT_AGAIN);
+}
+
+Game.Interaction.Train.prototype._removeTrain = function() {
+	Game.removeBeing(this._locomotive);
+	Game.log("You destroy the remaining locomotive.");
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 
@@ -86,6 +113,10 @@ Game.Interaction.Train.prototype._color = function() {
 
 Game.Interaction.Train.prototype._colorChange = function(color) {
 	this._locomotive.setColor(color);
+
+	Game.player.adjustItem(Game.ITEM_WATER, -1);
+	Game.log("You paint the train.");
+
 	this._build();
 }
 

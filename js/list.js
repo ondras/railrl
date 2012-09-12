@@ -2,7 +2,7 @@ Game.List = function(label, cancelCallback) {
 	this._cancelCallback = cancelCallback;
 	this._items = [];
 	this._node = document.createElement("div");
-	this._node.innerHTML = label;
+	this._node.innerHTML = "<p>" + label + "</p>";
 }
 
 Game.List.prototype.addItem = function(label, callback, disabled) {
