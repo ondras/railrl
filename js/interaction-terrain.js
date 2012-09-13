@@ -83,6 +83,16 @@ Game.Interaction.Terrain.prototype._mine = function() {
 	var amount = 2;
 	Game.player.adjustItem(Game.ITEM_IRON, amount);
 	Game.log("You mine " + amount + " pieces of iron.");
+
+	var avail = [Game.ITEM_GEM_RED, Game.ITEM_GEM_BLUE, Game.ITEM_GEM_GREEN, Game.ITEM_GEM_YELLOW];
+	for (var i=0;i<avail.length;i++) {
+		var item = avail[i];
+		if (ROT.RNG.getUniform() > 0.5) {
+			Game.player.adjustItem(item, 1);
+			Game.log("You found a " + Game.Items[item].name + "!");
+		}
+	}
+
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
 

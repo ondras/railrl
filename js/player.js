@@ -44,7 +44,7 @@ Game.Player.prototype.act = function() {
 }
 
 Game.Player.prototype.getItem = function(item) {
-	return (this._items[item] || 10);
+	return (this._items[item] || 0);
 }
 
 Game.Player.prototype.setItem = function(item, count) {
