@@ -165,7 +165,7 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 	var terrain = Game.terrain.get(x, y);
 	switch (terrain.type) {
 		case Game.Terrain.TYPE_MOUNTAIN:
-			ch = "*";
+			ch = "^";
 			var colors = ["#d99", "#ff3", "#ccc", "#fff"];
 			color = colors[Math.floor(terrain.amount * colors.length)];
 		break;
