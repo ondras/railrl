@@ -109,7 +109,7 @@ Game.Interaction.Terrain.prototype._getWater = function() {
 Game.Interaction.Terrain.prototype._cutTree = function() {
 	Game.terrain.cutTree(this._x, this._y);
 
-	var amount = 2;
+	var amount = 3;
 	Game.player.adjustItem(Game.ITEM_WOOD, amount);
 	Game.log("You cut down a tree and got " + amount + " pieces of wood.");
 	this._callback(Game.Interaction.RESULT_END_TURN);

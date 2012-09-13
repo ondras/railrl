@@ -1,7 +1,11 @@
 var Game = {
-	ITEM_WOOD:	0,
-	ITEM_IRON:	1,
-	ITEM_WATER:	2,
+	ITEM_WOOD:			0,
+	ITEM_IRON:			1,
+	ITEM_WATER:			2,
+	ITEM_GEM_RED:		3,
+	ITEM_GEM_BLUE:		4,
+	ITEM_GEM_GREEN:		5,
+	ITEM_GEM_YELLOW:	6,
 
 	rail: {},
 	beings: {},
@@ -11,9 +15,9 @@ var Game = {
 	player: null,
 	terrain: null,
 
-	setRail: function(x, y) {
+	setRail: function(x, y, type) {
 		var key = x+","+y;
-		this.rail[key] = true;
+		this.rail[key] = (type || true);
 		this.display.draw(x, y);
 	},
 
@@ -59,7 +63,6 @@ var Game = {
 	init: function() {
 		this.terrain = new Game.Terrain();
 		this.engine = new ROT.Engine();
-		this.display = new Game.Display();
 		this.player = new Game.Player();
 		this.engine.addActor(this.player);
 
@@ -73,16 +76,21 @@ var Game = {
 	_start: function() {
 		var intro = document.querySelector("#intro");
 		intro.parentNode.removeChild(intro);
+
+		this.display = new Game.Display();
 		document.body.appendChild(this.display.getContainer());
 
 		/* find initial position */
 		var pos = [0, 0];
-		while (Game.terrain.get(pos[0], pos[1]).type == Game.Terrain.TYPE_WATER) { 
+		while (Game.terrain.get(pos[0], pos[1]).type != Game.Terrain.TYPE_LAND || Game.terrain.get(pos[0]-1, pos[1]-1).type != Game.Terrain.TYPE_LAND) { 
 			pos[0] += 1;
 			pos[1] += 1;
 		}
 		this.setBeing(pos[0], pos[1], this.player);
 		this.display.resize();
+
+		pos[0] += 2;
+		pos[1] += 6;
 
 		/* build sample rail */
 		this._railFromTemplate(pos[0], pos[1], [

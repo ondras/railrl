@@ -2,9 +2,17 @@ Game.Interaction.Rail = function(x, y, callback) {
 	this._x = x;
 	this._y = y;
 	this._callback = callback;
-	
+
+	this._build();
+}
+
+Game.Interaction.Rail.prototype._build = function() {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
+
+	var disabled = (Game.player.getItem(Game.ITEM_WATER) ? null : "water needed");
+	list.addItem("Adjust color", this._color.bind(this), disabled);
+
 	list.addItem("Remove rail", this._removeRail.bind(this));
 
 	var trainDisabled = [];
@@ -54,4 +62,28 @@ Game.Interaction.Rail.prototype._addTrain = function() {
 
 	Game.engine.addActor(train);
 	this._callback(Game.Interaction.RESULT_AGAIN);
+}
+
+Game.Interaction.Rail.prototype._color = function() {
+	var label = "Paint the railway track:";
+	var list = new Game.List(label, this._build.bind(this));
+
+	list.addItem("Default", this._colorChange.bind(this));
+
+	var str = "<span style='color:#0f0'>Green</span>";
+	list.addItem(str, this._colorChange.bind(this, Game.ITEM_GEM_GREEN));
+
+	var str = "<span style='color:#ff0'>Yellow</span>";
+	list.addItem(str, this._colorChange.bind(this, Game.ITEM_GEM_YELLOW));
+
+	list.show();
+}
+
+Game.Interaction.Rail.prototype._colorChange = function(color) {
+	Game.setRail(this._x, this._y, color)
+
+	Game.player.adjustItem(Game.ITEM_WATER, -1);
+	Game.log("You paint the railway track.");
+
+	this._build();
 }

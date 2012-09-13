@@ -141,31 +141,40 @@ Game.Player.prototype._build = function() {
 	var row = document.createElement("tr");
 	t.appendChild(row);
 	row.appendChild(this._buildItem(Game.ITEM_WOOD));
-	row.appendChild(this._buildItem(Game.ITEM_WATER));
+	row.appendChild(this._buildItem(Game.ITEM_GEM_RED));
 
 	var row = document.createElement("tr");
 	t.appendChild(row);
 	row.appendChild(this._buildItem(Game.ITEM_IRON));
-	row.appendChild(document.createElement("td"));
+	row.appendChild(this._buildItem(Game.ITEM_GEM_BLUE));
 
+	var row = document.createElement("tr");
+	t.appendChild(row);
+	row.appendChild(this._buildItem(Game.ITEM_WATER));
+	row.appendChild(this._buildItem(Game.ITEM_GEM_GREEN));
+
+	var row = document.createElement("tr");
+	t.appendChild(row);
+	row.appendChild(document.createElement("td"));
+	row.appendChild(this._buildItem(Game.ITEM_GEM_YELLOW));
 	document.querySelector("#status").appendChild(t);
+
 }
 
 Game.Player.prototype._buildItem = function(item) {
 	var def = Game.Items[item];
 	var td = document.createElement("td");
-	td.title = def.name;
 
 	var ch = document.createElement("span");
 	ch.style.color = def.color;
-	ch.innerHTML = def.ch;
+	ch.innerHTML = def.ch + " ";
 	td.appendChild(ch);
 
 	var count = document.createElement("span");
 	this._dom.items[item] = count;
 	td.appendChild(count);
 
-	td.appendChild(document.createTextNode("×"));
+	td.appendChild(document.createTextNode("× " + def.name));
 
 	this._updateItem(item);
 

@@ -106,7 +106,9 @@ Game.Display.prototype._drawCell = function(x, y, clear) {
 		this._context.fillStyle = being.getColor();
 		this._context.fillText(being.getChar(), cx, cy);
 	} else if (rail) {
-		this._context.fillStyle = "brown";
+		var color = "brown";
+		if (rail !== true) { color = Game.Items[rail].color; }
+		this._context.fillStyle = color;
 		this._context.fillText("#", cx, cy);
 	} else {
 		this._drawTerrain(x, y, cx, cy);
