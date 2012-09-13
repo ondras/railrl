@@ -77,44 +77,28 @@ body {
 #intro #train {
 	display: block;
 	color: goldenrod;
-	-webkit-animation: train 30s linear 0s infinite;
-	-moz-animation: train 30s linear 0s infinite;
-	-o-animation: train 30s linear 0s infinite;
-	animation: train 30s linear 0s infinite;
+	-webkit-animation: train 20s linear 0s infinite;
+	-moz-animation: train 20s linear 0s infinite;
+	-o-animation: train 20s linear 0s infinite;
+	animation: train 20s linear 0s infinite;
 }
 
 @-webkit-keyframes train {
-	0%		{ color: #ff0; -webkit-transform: translate(-55%, -100%); }
-	33%		{ color: #f00; -webkit-transform: translate( 55%, -100%); }
-	33.01%	{ color: #f0f; -webkit-transform: translate(-55%,    0%); }
-	67%		{ color: #00f; -webkit-transform: translate( 55%,    0%); }
-	67.01%	{ color: #0ff; -webkit-transform: translate(-55%,  100%); }
-	100%	{ color: #0f0; -webkit-transform: translate( 55%,  100%); }
+	0%		{ color: #ff0; -webkit-transform: translate( 70%, 0); }
+	100%	{ color: #f00; -webkit-transform: translate(-70%, 0); }
 }
 
 @-moz-keyframes train {
-	0%		{ color: #ff0; -moz-transform: translate(-55%, -100%); }
-	33%		{ color: #f00; -moz-transform: translate( 55%, -100%); }
-	33.01%	{ color: #f0f; -moz-transform: translate(-55%,    0%); }
-	67%		{ color: #00f; -moz-transform: translate( 55%,    0%); }
-	67.01%	{ color: #0ff; -moz-transform: translate(-55%,  100%); }
-	100%	{ color: #0f0; -moz-transform: translate( 55%,  100%); }
+	0%		{ color: #ff0; -moz-transform: translate( 70%, 0); }
+	100%	{ color: #f00; -moz-transform: translate(-70%, 0); }
 }
 
 @-o-keyframes train {
-	0%		{ color: #ff0; -o-transform: translate(-55%, -100%); }
-	33%		{ color: #f00; -o-transform: translate( 55%, -100%); }
-	33.01%	{ color: #f0f; -o-transform: translate(-55%,    0%); }
-	67%		{ color: #00f; -o-transform: translate( 55%,    0%); }
-	67.01%	{ color: #0ff; -o-transform: translate(-55%,  100%); }
-	100%	{ color: #0f0; -o-transform: translate( 55%,  100%); }
+	0%		{ color: #ff0; -o-transform: translate( 70%, 0); }
+	100%	{ color: #f00; -o-transform: translate(-70%, 0); }
 }
 
 @keyframes train {
-	0%		{ color: #ff0; transform: translate(-55%, -100%); }
-	33%		{ color: #f00; transform: translate( 55%, -100%); }
-	33.01%	{ color: #f0f; transform: translate(-55%,    0%); }
-	67%		{ color: #00f; transform: translate( 55%,    0%); }
-	67.01%	{ color: #0ff; transform: translate(-55%,  100%); }
-	100%	{ color: #0f0; transform: translate( 55%,  100%); }
+	0%		{ color: #ff0; transform: translate( 70%, 0); }
+	100%	{ color: #f00; transform: translate(-70%, 0); }
 }

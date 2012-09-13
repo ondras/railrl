@@ -35,8 +35,7 @@ Game.Player.prototype.act = function() {
 	Game.engine.lock();
 	
 	if (this._alive) {
-		/* wait for input */
-		window.addEventListener("keydown", this);
+		window.addEventListener("keydown", this); /* wait for input */
 	} else {
 		Game.display.forceUpdate();
 		alert("Game over");
