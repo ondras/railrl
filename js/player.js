@@ -160,7 +160,23 @@ Game.Player.prototype._endInteraction = function(success) {
 }
 
 Game.Player.prototype._updateItem = function(item) {
-	this._dom.items[item].innerHTML = this.getItem(item);
+	var parent = this._dom.items[item];
+	parent.innerHTML = "";
+	
+	var count = this.getItem(item); 
+
+	if (count) {
+		var def = Game.Items[item];
+		var ch = document.createElement("span");
+		ch.style.color = def.color;
+		ch.innerHTML = def.ch + " ";
+		parent.appendChild(ch);
+
+		var txt = count + "× " + def.name;
+		parent.appendChild(document.createTextNode(txt));
+	} else {
+		parent.innerHTML = "&nbsp;";
+	}
 }
 
 Game.Player.prototype._build = function() {
@@ -190,21 +206,8 @@ Game.Player.prototype._build = function() {
 }
 
 Game.Player.prototype._buildItem = function(item) {
-	var def = Game.Items[item];
 	var td = document.createElement("td");
-
-	var ch = document.createElement("span");
-	ch.style.color = def.color;
-	ch.innerHTML = def.ch + " ";
-	td.appendChild(ch);
-
-	var count = document.createElement("span");
-	this._dom.items[item] = count;
-	td.appendChild(count);
-
-	td.appendChild(document.createTextNode("× " + def.name));
-
+	this._dom.items[item] = td;
 	this._updateItem(item);
-
 	return td;
 }
