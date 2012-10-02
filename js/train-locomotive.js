@@ -18,15 +18,7 @@ Game.Train.Locomotive.prototype.addCar = function(train) {
 	if (this._cars.length) { /* compute direction from two last cars */
 		var c2 = this._cars[this._cars.length-1];
 		var c1 = (this._cars.length > 1 ? this._cars[this._cars.length-2] : this);
-		var pos2 = c2.getPosition();
-		var pos1 = c1.getPosition();
-		var dx = pos2[0]-pos1[0];
-		var dy = pos2[1]-pos1[1];
-		var dirs = ROT.DIRS[6];
-		for (var i=0;i<dirs.length;i++) {
-			var dir = dirs[i];
-			if (dir[0] == dx && dir[1] == dy) { direction = i; }
-		}
+		direction = c1.directionTo(c2);
 	}
 
 	/* 2. current last car */
@@ -51,6 +43,7 @@ Game.Train.Locomotive.prototype.addCar = function(train) {
 	train.setLocomotive(this);
 	train.setColor(this._color);
 
+	return true;
 }
 
 Game.Train.Locomotive.prototype.getCars = function() {
@@ -93,6 +86,35 @@ Game.Train.Locomotive.prototype.act = function() {
 }
 
 /**
+ * Reverse car position, change locomotive's orientation accordingly
+ */
+Game.Train.Locomotive.prototype.reverse = function() {
+	var all = [this].concat(this._cars);
+
+	/* locomotive orientation */
+	if (all.length == 1) { /* just one car => turn 180 degrees */
+		this._orientation = (this._orientation+3) % 6;
+	} else {
+		var last = all[all.length-1];
+		var lastButOne = all[all.length-2];
+		this._orientation = lastButOne.directionTo(last);
+	}
+	
+	/* reverse cars */
+	while (all.length) {
+		var first = all.shift();
+		if (!all.length) { continue; }
+		var second = all.pop();
+		
+		/* swap first and second */
+		var p1 = first.getPosition();
+		var p2 = second.getPosition();
+		Game.setBeing(p2[0], p2[1], first);
+		Game.setBeing(p1[0], p1[1], second);
+	}
+}
+
+/**
  * @returns {bool} Moved?
  */
 Game.Train.Locomotive.prototype._move = function() {
@@ -105,7 +127,8 @@ Game.Train.Locomotive.prototype._move = function() {
 		var right = this._isRailAtDir((o+1) % 6);
 		if (left) { options.push((o+5)%6); }
 		if (right) { options.push((o+1)%6); }  
-		if (!options.length) { /* nowhere to move, FIXME reverse */
+		if (!options.length) { /* nowhere to move, reverse */
+			this.reverse();
 			return;
 		}
 		this._orientation = o = options.random();

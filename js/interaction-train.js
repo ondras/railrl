@@ -14,7 +14,7 @@ Game.Interaction.Train = function(locomotive, callback) {
 Game.Interaction.Train.prototype._build = function() {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
-	list.addItem("Change orientation", this._swap.bind(this));
+	list.addItem("Change orientation", this._reverse.bind(this));
 
 	var req = Game.Rules.PRICE_TRAIN;
 	var disabled = null;
@@ -60,24 +60,9 @@ Game.Interaction.Train.prototype._cancel = function() {
 	this._callback(Game.Interaction.RESULT_NOOP);
 }
 
-Game.Interaction.Train.prototype._swap = function() {
-	var o = this._locomotive.getOrientation();
-	this._locomotive.setOrientation((o+3) % 6); /* FIXME to je blbe */
-	
-	/* reverse cars */
-	var all = [this._locomotive].concat(this._locomotive.getCars());
-	while (all.length) {
-		var first = all.shift();
-		if (!all.length) { continue; }
-		var second = all.pop();
+Game.Interaction.Train.prototype._reverse = function() {
+	this._locomotive.reverse();
 		
-		/* swap first and second */
-		var p1 = first.getPosition();
-		var p2 = second.getPosition();
-		Game.setBeing(p2[0], p2[1], first);
-		Game.setBeing(p1[0], p1[1], second);
-	}
-	
 	Game.log("You change the train's orientation.");
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
@@ -87,11 +72,14 @@ Game.Interaction.Train.prototype._swap = function() {
  */
 Game.Interaction.Train.prototype._addCar = function() {
 	var car = new Game.Train();
-	this._locomotive.addCar(car);
+	var result = this._locomotive.addCar(car);
 
-	Game.player.adjustItems(Game.Rules.PRICE_TRAIN, -1);
-
-	Game.log("You construct and add a new car.");
+	if (result) {
+		Game.player.adjustItems(Game.Rules.PRICE_TRAIN, -1);
+		Game.log("You construct and add a new car.");
+	} else {
+		Game.log("It is not possible to add a new car.");
+	}
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
 

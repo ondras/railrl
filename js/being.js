@@ -37,3 +37,16 @@ Game.Being.prototype.act = function() {
 Game.Being.prototype.die = function() {
 	Game.removeBeing(this);
 }
+
+Game.Being.prototype.directionTo = function(being) {
+	var pos1 = this.getPosition();
+	var pos2 = being.getPosition();
+	var dx = pos2[0]-pos1[0];
+	var dy = pos2[1]-pos1[1];
+	var dirs = ROT.DIRS[6];
+	for (var i=0;i<dirs.length;i++) {
+		var dir = dirs[i];
+		if (dir[0] == dx && dir[1] == dy) { return i; }
+	}
+	return null;
+}
