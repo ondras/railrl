@@ -22,6 +22,7 @@ Game.Being.prototype.getName = function() {
 
 Game.Being.prototype.setPosition = function(x, y) {
 	this._position = (x === null ? null : [x, y]);
+	return this;
 }
 
 Game.Being.prototype.getPosition = function() {

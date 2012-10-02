@@ -89,8 +89,7 @@ Game.Interaction.Train.prototype._addCar = function() {
 	var car = new Game.Train();
 	this._locomotive.addCar(car);
 
-	Game.player.adjustItem(Game.ITEM_WOOD, -2);
-	Game.player.adjustItem(Game.ITEM_IRON, -2);
+	Game.player.adjustItems(Game.Rules.PRICE_TRAIN, -1);
 
 	Game.log("You construct and add a new car.");
 	this._callback(Game.Interaction.RESULT_AGAIN);

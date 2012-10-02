@@ -72,7 +72,7 @@ Game.Interaction.Terrain.prototype._cancel = function() {
 }
 
 Game.Interaction.Terrain.prototype._buildRail = function() {
-	Game.setRail(this._x, this._y);
+	Game.createRail(this._x, this._y);
 	Game.player.adjustItems(Game.Rules.PRICE_RAIL, -1);
 	Game.log("You build a rail section.");
 	this._callback(Game.Interaction.RESULT_END_TURN);

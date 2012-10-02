@@ -15,9 +15,9 @@ var Game = {
 	player: null,
 	terrain: null,
 
-	setRail: function(x, y, type) {
+	createRail: function(x, y) {
 		var key = x+","+y;
-		this.rail[key] = (type || true);
+		this.rail[key] = 1;
 		this.display.draw(x, y);
 	},
 
@@ -164,7 +164,7 @@ var Game = {
 				var cy = y+j;
 				var terrain = Game.terrain.get(cx, cy);
 				if (terrain.type == Game.Terrain.TYPE_WATER) { Game.terrain.setBridge(cx, cy); }
-				this.setRail(cx, cy);
+				this.createRail(cx, cy);
 			}
 		}
 	},

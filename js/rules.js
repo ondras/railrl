@@ -20,8 +20,5 @@ Game.Rules.PRICE_TRAIN = {};
 Game.Rules.PRICE_TRAIN[Game.ITEM_WOOD] = 2;
 Game.Rules.PRICE_TRAIN[Game.ITEM_IRON] = 2;
 
-Game.Rules.PRICE_PAINT_RAIL = {};
-Game.Rules.PRICE_PAINT_RAIL[Game.ITEM_WATER] = 1;
-
 Game.Rules.PRICE_PAINT_TRAIN = {};
 Game.Rules.PRICE_PAINT_TRAIN[Game.ITEM_WATER] = 1;

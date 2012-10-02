@@ -39,3 +39,11 @@ Game.Train.prototype.getChar = function() {
 Game.Train.prototype.getColor = function() {
 	return this._color;
 }
+
+Game.Train.prototype.setPosition = function(x, y) {
+	Game.Being.prototype.setPosition.call(this, x, y);
+	if (this._position) {
+		var key = x+","+y;
+		Game.rail[key]++;
+	}
+}

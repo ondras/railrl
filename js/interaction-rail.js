@@ -10,11 +10,6 @@ Game.Interaction.Rail.prototype._build = function() {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
 
-	var req = Game.Rules.PRICE_PAINT_RAIL;
-	var disabled = null;
-	if (!Game.player.hasItems(req)) { disabled = req; }
-	list.addItem("Adjust color", this._color.bind(this), req);
-
 	list.addItem("Remove rail", this._removeRail.bind(this));
 	
 	var req = Game.Rules.PRICE_TRAIN;
@@ -60,28 +55,4 @@ Game.Interaction.Rail.prototype._addTrain = function() {
 
 	Game.engine.addActor(train);
 	this._callback(Game.Interaction.RESULT_AGAIN);
-}
-
-Game.Interaction.Rail.prototype._color = function() {
-	var label = "Paint the railway track:";
-	var list = new Game.List(label, this._build.bind(this));
-
-	list.addItem("Default", this._colorChange.bind(this));
-
-	var str = "<span style='color:#0f0'>Green</span>";
-	list.addItem(str, this._colorChange.bind(this, Game.ITEM_GEM_GREEN));
-
-	var str = "<span style='color:#ff0'>Yellow</span>";
-	list.addItem(str, this._colorChange.bind(this, Game.ITEM_GEM_YELLOW));
-
-	list.show();
-}
-
-Game.Interaction.Rail.prototype._colorChange = function(color) {
-	Game.setRail(this._x, this._y, color)
-
-	Game.player.adjustItems(Game.Rules.PRICE_PAINT_RAIL, -1);
-	Game.log("You paint the railway track.");
-
-	this._build();
 }

@@ -106,9 +106,7 @@ Game.Display.prototype._drawCell = function(x, y, clear) {
 		this._context.fillStyle = being.getColor();
 		this._context.fillText(being.getChar(), cx, cy);
 	} else if (rail) {
-		var color = "brown";
-		if (rail !== true) { color = Game.Items[rail].color; }
-		this._context.fillStyle = color;
+		this._context.fillStyle = this._getRailColor(rail);
 		this._context.fillText("#", cx, cy);
 	} else {
 		this._drawTerrain(x, y, cx, cy);
@@ -202,4 +200,16 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 
 	this._context.fillStyle = color;
 	this._context.fillText(ch, cx, cy);
+}
+
+Game.Display.prototype._getRailColor = function(rail) {
+	/* FIXME better */
+	var val = Math.log(rail);
+	if (val < 1.5) {
+		return "brown";
+	} else if (val < 3) {
+		return "#aaa";
+	} else {
+		return "#666";
+	}
 }
