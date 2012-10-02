@@ -23,15 +23,15 @@ Game.Terrain.TYPE_CITY		= 5;
  * @returns {object} Keys: type, 
  */
 Game.Terrain.prototype.get = function(x, y) {
-	var key = x+","+y;
 	var result = {};
-	
-	var city = this._noise.city.get(x, y);
-	if (city > .98) {
+
+	if (this._isCity(x, y)) {
 		result.type = Game.Terrain.TYPE_CITY;
 		return result;
 	}
 	
+	var key = x+","+y;
+
 	if (key in this._bridges) { 
 		result.type = Game.Terrain.TYPE_BRIDGE;
 		return result;
@@ -74,4 +74,10 @@ Game.Terrain.prototype.removeBridge = function(x, y) {
 Game.Terrain.prototype.clear = function(x, y) {
 	this._cleared[x+","+y] = true;
 	Game.display.draw(x, y);
+}
+
+Game.Terrain.prototype._isCity = function(x, y) {
+	var xx = x + Math.round(Math.sin(x+y));
+	var yy = y + Math.round(Math.cos(x+y));
+	return (xx % 20 == 0 && yy % 10 == 0);
 }

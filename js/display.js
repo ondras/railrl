@@ -1,4 +1,5 @@
 Game.Display = function(options) {
+	/* FIXME cache color arrays */
 	var options = {
 		fontSize: 20,
 		layout: "hex",

@@ -22,3 +22,6 @@ Game.Rules.PRICE_TRAIN[Game.ITEM_IRON] = 2;
 
 Game.Rules.PRICE_PAINT_TRAIN = {};
 Game.Rules.PRICE_PAINT_TRAIN[Game.ITEM_WATER] = 1;
+
+Game.Rules.CHANCE_BERRY	= 0.8;
+Game.Rules.CHANCE_GEM	= 0.8;

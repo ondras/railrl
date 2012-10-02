@@ -18,15 +18,15 @@ Game.Items[Game.ITEM_IRON] = {
 	color: "#666"
 };
 
-Game.Items[Game.ITEM_GEM_RED] = {
-	ch: "*",
-	name: "Red gem",
+Game.Items[Game.ITEM_STRAWBERRY] = {
+	ch: "o",
+	name: "Strawberry",
 	color: "#f00"
 };
 
-Game.Items[Game.ITEM_GEM_BLUE] = {
-	ch: "*",
-	name: "Blue gem",
+Game.Items[Game.ITEM_BLUEBERRY] = {
+	ch: "o",
+	name: "Blueberry",
 	color: "#00f"
 };
 
@@ -39,5 +39,11 @@ Game.Items[Game.ITEM_GEM_GREEN] = {
 Game.Items[Game.ITEM_GEM_YELLOW] = {
 	ch: "*",
 	name: "Yellow gem",
+	color: "#ff0"
+};
+
+Game.Items[Game.ITEM_MONEY] = {
+	ch: "$",
+	name: "Money",
 	color: "#ff0"
 };

@@ -62,6 +62,10 @@ Game.Interaction.Terrain.prototype._getLabel = function(terrain) {
 		case Game.Terrain.TYPE_LAND:
 			str += "a piece of plain land.";
 		break;
+
+		case Game.Terrain.TYPE_CITY:
+			str += "a beautiful city.";
+		break;
 	}
 
 	return str;
@@ -85,10 +89,10 @@ Game.Interaction.Terrain.prototype._mine = function() {
 	var base = Game.Rules.REWARD_MINE;
 	for (var p in base) { obj[p] = base[p]; }
 
-	var avail = [Game.ITEM_GEM_RED, Game.ITEM_GEM_BLUE, Game.ITEM_GEM_GREEN, Game.ITEM_GEM_YELLOW];
+	var avail = [Game.ITEM_GEM_GREEN, Game.ITEM_GEM_YELLOW];
 	for (var i=0;i<avail.length;i++) {
 		var item = avail[i];
-		if (ROT.RNG.getUniform() > 0.8) {
+		if (ROT.RNG.getUniform() > Game.Rules.CHANCE_GEM) {
 			obj[item] = 1;
 		}
 	}
@@ -122,8 +126,20 @@ Game.Interaction.Terrain.prototype._getWater = function() {
 
 Game.Interaction.Terrain.prototype._cutTree = function() {
 	Game.terrain.clear(this._x, this._y);
+	
+	var obj = {};
+	var base = Game.Rules.REWARD_CUT_TREE;
+	for (var p in base) { obj[p] = base[p]; }
 
-	Game.player.adjustItems(Game.Rules.REWARD_CUT_TREE);
-	Game.log("You cut down a tree and got %i.", Game.Rules.REWARD_CUT_TREE);
+	var avail = [Game.ITEM_BLUEBERRY, Game.ITEM_STRAWBERRY];
+	for (var i=0;i<avail.length;i++) {
+		var item = avail[i];
+		if (ROT.RNG.getUniform() > Game.Rules.CHANCE_BERRY) {
+			obj[item] = 1;
+		}
+	}
+	
+	Game.player.adjustItems(obj);
+	Game.log("You cut down a tree and got %i.", obj);
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }

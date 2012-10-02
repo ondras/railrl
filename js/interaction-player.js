@@ -10,6 +10,7 @@ Game.Interaction.Player = function(callback) {
 
 Game.Interaction.Player.prototype._getLabel = function() {
 	return "This is yourself, a brave adventurer!";
+	/* FIXME naimplementovat */
 }
 
 Game.Interaction.Player.prototype._cancel = function() {

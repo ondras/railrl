@@ -23,6 +23,11 @@ Game.Player = function() {
 	this._keys[90]	= 4; /* bottom left */
 	this._keys[65]	= 5; /* left */
 
+	this._keys[37]	= 5; /* left */
+	this._keys[39]	= 2; /* right */
+	this._keys[38]	= 0; /* up */
+	this._keys[40]	= 3; /* bottom */
+
 	this._keys[101]	= -1; /* noop */
 	this._keys[110]	= -1; /* noop */
 	this._keys[190]	= -1; /* noop */
@@ -93,7 +98,6 @@ Game.Player.prototype.handleEvent = function(e) {
 	if (e.ctrlKey) { return; }
 	
 	e.preventDefault();
-	document.querySelector("#log").innerHTML = ""; /* empty the log */
 	code = this._keys[code];
 
 	var dir = (code == -1 ? [0,0] : ROT.DIRS[6][code]);
@@ -185,12 +189,12 @@ Game.Player.prototype._build = function() {
 	var row = document.createElement("tr");
 	t.appendChild(row);
 	row.appendChild(this._buildItem(Game.ITEM_WOOD));
-	row.appendChild(this._buildItem(Game.ITEM_GEM_RED));
+	row.appendChild(this._buildItem(Game.ITEM_STRAWBERRY));
 
 	var row = document.createElement("tr");
 	t.appendChild(row);
 	row.appendChild(this._buildItem(Game.ITEM_IRON));
-	row.appendChild(this._buildItem(Game.ITEM_GEM_BLUE));
+	row.appendChild(this._buildItem(Game.ITEM_BLUEBERRY));
 
 	var row = document.createElement("tr");
 	t.appendChild(row);
@@ -199,9 +203,9 @@ Game.Player.prototype._build = function() {
 
 	var row = document.createElement("tr");
 	t.appendChild(row);
-	row.appendChild(document.createElement("td"));
+	row.appendChild(this._buildItem(Game.ITEM_MONEY));
 	row.appendChild(this._buildItem(Game.ITEM_GEM_YELLOW));
-	document.querySelector("#status").appendChild(t);
+	document.querySelector("#inv").appendChild(t);
 
 }
 

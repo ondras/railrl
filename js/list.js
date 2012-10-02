@@ -3,6 +3,7 @@ Game.List = function(label, cancelCallback) {
 	this._items = [];
 	this._node = document.createElement("div");
 	this._node.innerHTML = "<p>" + label + "</p>";
+	this._window = null;
 }
 
 Game.List.prototype.addItem = function(label, callback, disabled) {
@@ -23,7 +24,7 @@ Game.List.prototype.show = function() {
 	
 	this._buildItem("Cancel", 0);
 	
-	document.querySelector("#log").appendChild(this._node);
+	this._window = new Game.Window(this._node);
 }
 
 Game.List.prototype.handleEvent = function(e) {
@@ -73,5 +74,5 @@ Game.List.prototype._buildItem = function(label, number, disabled) {
 }
 
 Game.List.prototype._hide = function() {
-	this._node.parentNode.removeChild(this._node);
+	this._window.close();
 }

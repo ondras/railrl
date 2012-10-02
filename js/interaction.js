@@ -16,7 +16,7 @@ Game.Interaction.prototype._build = function() {
 	var key = this._x+","+this._y;
 	var result = this._result.bind(this);
 	
-	if (Game.beings[key]) {			/* being/train */
+	if (Game.beings[key]) {	/* being/train */
 		var being = Game.beings[key];
 		if (being instanceof Game.Train) {
 			var locomotive = being.getLocomotive();
@@ -26,7 +26,7 @@ Game.Interaction.prototype._build = function() {
 		} else {
 			new Game.Interaction.Being(being, result);
 		}
-	} else {	/* terrain (possibly with rail) */
+	} else { /* terrain (possibly with rail) */
 		if (Game.rail[key]) {
 			new Game.Interaction.Rail(this._x, this._y, result);
 		} else {

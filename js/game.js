@@ -2,10 +2,11 @@ var Game = {
 	ITEM_WOOD:			0,
 	ITEM_IRON:			1,
 	ITEM_WATER:			2,
-	ITEM_GEM_RED:		3,
-	ITEM_GEM_BLUE:		4,
+	ITEM_STRAWBERRY:	3,
+	ITEM_BLUEBERRY:		4,
 	ITEM_GEM_GREEN:		5,
 	ITEM_GEM_YELLOW:	6,
+	ITEM_MONEY:			7,
 
 	rail: {},
 	beings: {},
@@ -92,7 +93,12 @@ var Game = {
 			item.appendChild(node);
 		}
 		
-		document.querySelector("#log").appendChild(item);
+		var parent = document.querySelector("#log");
+		parent.insertBefore(item, parent.firstChild);
+		
+		while (parent.childNodes.length > 10) {
+			parent.removeChild(parent.lastChild);
+		}
 	},
 	
 	init: function() {
