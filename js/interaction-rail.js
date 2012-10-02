@@ -10,18 +10,17 @@ Game.Interaction.Rail.prototype._build = function() {
 	var label = this._getLabel();
 	var list = new Game.List(label, this._cancel.bind(this));
 
-	var disabled = (Game.player.getItem(Game.ITEM_WATER) ? null : "water needed");
-	list.addItem("Adjust color", this._color.bind(this), disabled);
+	var req = Game.Rules.PRICE_PAINT_RAIL;
+	var disabled = null;
+	if (!Game.player.hasItems(req)) { disabled = req; }
+	list.addItem("Adjust color", this._color.bind(this), req);
 
 	list.addItem("Remove rail", this._removeRail.bind(this));
-
-	var trainDisabled = [];
-	var wood = Game.player.getItem(Game.ITEM_WOOD);
-	var iron = Game.player.getItem(Game.ITEM_IRON);
-	if (wood < 2) { trainDisabled.push("2 wood"); }
-	if (iron < 2) { trainDisabled.push("2 iron"); }
-	trainDisabled = (trainDisabled.length ? trainDisabled.join(" &amp; ") + " needed" : null);
-	list.addItem("Add new train", this._addTrain.bind(this), trainDisabled);
+	
+	var req = Game.Rules.PRICE_TRAIN;
+	var disabled = null;
+	if (!Game.player.hasItems(req)) { disabled = req; }
+	list.addItem("Add new train", this._addTrain.bind(this), disabled);
 	
 	list.show();
 }
@@ -44,8 +43,7 @@ Game.Interaction.Rail.prototype._addTrain = function() {
 	var train = new Game.Train.Locomotive();
 	Game.setBeing(this._x, this._y, train);
 	
-	Game.player.adjustItem(Game.ITEM_WOOD, -2);
-	Game.player.adjustItem(Game.ITEM_IRON, -2);
+	Game.player.adjustItems(Game.Rules.PRICE_TRAIN, -1);
 
 	/* orientation towards an empty rail */
 	var dirs = ROT.DIRS[6];
@@ -82,7 +80,7 @@ Game.Interaction.Rail.prototype._color = function() {
 Game.Interaction.Rail.prototype._colorChange = function(color) {
 	Game.setRail(this._x, this._y, color)
 
-	Game.player.adjustItem(Game.ITEM_WATER, -1);
+	Game.player.adjustItems(Game.Rules.PRICE_PAINT_RAIL, -1);
 	Game.log("You paint the railway track.");
 
 	this._build();

@@ -16,13 +16,10 @@ Game.Interaction.Train.prototype._build = function() {
 	var list = new Game.List(label, this._cancel.bind(this));
 	list.addItem("Change orientation", this._swap.bind(this));
 
-	var trainDisabled = [];
-	var wood = Game.player.getItem(Game.ITEM_WOOD);
-	var iron = Game.player.getItem(Game.ITEM_IRON);
-	if (wood < 2) { trainDisabled.push("2 wood"); }
-	if (iron < 2) { trainDisabled.push("2 iron"); }
-	trainDisabled = (trainDisabled.length ? trainDisabled.join(" &amp; ") + " needed" : null);
-	list.addItem("Add car", this._addCar.bind(this), trainDisabled);
+	var req = Game.Rules.PRICE_TRAIN;
+	var disabled = null;
+	if (!Game.player.hasItems(req)) { disabled = req; }
+	list.addItem("Add car", this._addCar.bind(this), disabled);
 
 	if (this._locomotive.getCars().length) {
 		list.addItem("Remove car", this._removeCar.bind(this));
@@ -30,9 +27,13 @@ Game.Interaction.Train.prototype._build = function() {
 		list.addItem("Destroy train", this._removeTrain.bind(this));
 	}
 
-	var disabled = (Game.player.getItem(Game.ITEM_WATER) ? null : "water needed");
+	var req = Game.Rules.PRICE_PAINT_TRAIN;
+	var disabled = null;
+	if (!Game.player.hasItems(req)) { disabled = req; }
 	list.addItem("Adjust color", this._color.bind(this), disabled);
+
 	list.addItem("Adjust speed", this._speed.bind(this));
+
 	list.addItem("Adjust logic", this._logic.bind(this), "not implemented");
 	list.show();
 }
@@ -61,7 +62,7 @@ Game.Interaction.Train.prototype._cancel = function() {
 
 Game.Interaction.Train.prototype._swap = function() {
 	var o = this._locomotive.getOrientation();
-	this._locomotive.setOrientation((o+3) % 6);
+	this._locomotive.setOrientation((o+3) % 6); /* FIXME to je blbe */
 	
 	/* reverse cars */
 	var all = [this._locomotive].concat(this._locomotive.getCars());

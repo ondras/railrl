@@ -54,9 +54,44 @@ var Game = {
 		this.display.draw(oldPosition[0], oldPosition[1]);
 	},
 	
+	/**
+	 * @param {string} text May contain %s (string) and %i (itemlist)
+	 */
 	log: function(text) {
+		/* FIXME predelat na pole stringu/uzlu */
 		var item = document.createElement("p");
-		item.innerHTML = text;
+		var startIndex = 0;
+		var argIndex = 1;
+		var params = arguments;
+		
+		text.replace(/%([si])/g, function(match, letter, index) {
+			if (index != startIndex) { /* start with text node */
+				var node = document.createTextNode(text.substring(startIndex, index));
+				item.appendChild(node);
+			}
+			
+			var value = params[argIndex++];
+			
+			switch (letter) {
+				case "s":
+					var node = document.createTextNode(value);
+					item.appendChild(node);
+				break;
+				case "i":
+					Game.logItems(value, item);
+				break;
+			}
+			
+			startIndex = index + match.length;
+			
+			return "";
+		});
+		
+		if (startIndex < text.length) {
+			var node = document.createTextNode(text.substring(startIndex));
+			item.appendChild(node);
+		}
+		
 		document.querySelector("#log").appendChild(item);
 	},
 	
@@ -113,6 +148,10 @@ var Game = {
 		train.addCar(new Game.Train());
 
 		this.engine.start();
+		
+		var tmp = {};
+		tmp[Game.ITEM_IRON] = 10;
+		tmp[Game.ITEM_GEM_YELLOW] = 2;
 	},
 
 	_railFromTemplate: function(x, y, template) {
@@ -128,5 +167,33 @@ var Game = {
 				this.setRail(cx, cy);
 			}
 		}
+	},
+	
+	logItems: function(items, parent) {
+		/* FIXME title */
+		/* FIXME nbsp */
+		parent.appendChild(document.createTextNode("{"));
+
+		var index = 0;
+		for (var id in items) {
+			var def = Game.Items[id];
+			var count = items[id];
+			
+			if (index) { 
+				var separator = document.createTextNode(", ");
+				parent.appendChild(separator);
+			}
+			
+			var span = document.createElement("span");
+			span.style.color = def.color;
+			span.innerHTML = def.ch;
+			parent.appendChild(span);
+			
+			var count = document.createTextNode(" " + items[id]+"×");
+			parent.appendChild(count);
+			index++;
+		}
+
+		parent.appendChild(document.createTextNode("}"));
 	}
 }

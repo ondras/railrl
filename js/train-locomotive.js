@@ -104,8 +104,10 @@ Game.Train.Locomotive.prototype._move = function() {
 		var left = this._isRailAtDir((o+5) % 6);
 		var right = this._isRailAtDir((o+1) % 6);
 		if (left) { options.push((o+5)%6); }
-		if (right) { options.push((o+1)%6); }
-		if (!options.length) { return; } /* nowhere to move */
+		if (right) { options.push((o+1)%6); }  
+		if (!options.length) { /* nowhere to move, FIXME reverse */
+			return;
+		}
 		this._orientation = o = options.random();
 	}
 

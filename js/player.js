@@ -46,15 +46,44 @@ Game.Player.prototype.getItem = function(item) {
 	return (this._items[item] || 0);
 }
 
+/**
+ * Set item amount
+ */
 Game.Player.prototype.setItem = function(item, count) {
 	this._items[item] = count;
 	this._updateItem(item);
 	return this;
 }
 
+/**
+ * Adjust one item by a diff
+ */
 Game.Player.prototype.adjustItem = function(item, diff) {
 	this.setItem(item, this.getItem(item) + diff);
 	return this;
+}
+
+/**
+ * Adjust inventory based on an itemlist
+ * @param {object} items 
+ * @param {int} [factor=1]
+ */
+Game.Player.prototype.adjustItems = function(items, factor) {
+	var f = factor || 1;
+	for (var id in items) {
+		this.adjustItem(id, f*items[id]);
+	}
+	return this;
+}
+
+/**
+ * Does the player have all items from this list?
+ */
+Game.Player.prototype.hasItems = function(items) {
+	for (var id in items) {
+		if (this.getItem(id) < items[id]) { return false; }
+	}
+	return true;
 }
 
 Game.Player.prototype.handleEvent = function(e) {

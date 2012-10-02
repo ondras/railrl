@@ -56,8 +56,19 @@ Game.List.prototype._buildItem = function(label, number, disabled) {
 	str += number.toString(16);
 	if (!disabled) { str += "</em>"; }
 	str += ". " + label;
-	if (disabled) { str += " ("+disabled+")"; }
 	p.innerHTML = str;
+
+	if (disabled) {
+		if (typeof(disabled) == "string") {
+			var text = document.createTextNode(" - " + disabled);
+			p.appendChild(text);
+		} else {
+			var text = document.createTextNode(" - requires ");
+			p.appendChild(text);
+			Game.logItems(disabled, p);
+		}
+	}
+
 	this._node.appendChild(p);
 }
 

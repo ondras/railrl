@@ -193,6 +193,11 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 			var colors = ["#666", "#960"];
 			color = colors[Math.floor(terrain.amount * colors.length)];
 		break;
+
+		case Game.Terrain.TYPE_CITY:
+			ch = "+";
+			color = "#fff";
+		break;
 	}
 
 	this._context.fillStyle = color;

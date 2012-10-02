@@ -7,12 +7,9 @@ Game.Interaction.Terrain = function(x, y, callback) {
 	var label = this._getLabel(terrain);
 	var list = new Game.List(label, this._cancel.bind(this));
 
-	var railDisabled = [];
-	var wood = Game.player.getItem(Game.ITEM_WOOD);
-	var iron = Game.player.getItem(Game.ITEM_IRON);
-	if (!wood) { railDisabled.push("wood"); }
-	if (!iron) { railDisabled.push("iron"); }
-	railDisabled = (railDisabled.length ? railDisabled.join(" &amp; ") + " needed" : null);
+	var req = Game.Rules.PRICE_RAIL;
+	var railDisabled = null;
+	if (!Game.player.hasItems(req)) { railDisabled = req; }
 
 	switch (terrain.type) {
 		case Game.Terrain.TYPE_MOUNTAIN:
@@ -20,7 +17,9 @@ Game.Interaction.Terrain = function(x, y, callback) {
 		break;
 
 		case Game.Terrain.TYPE_WATER:
-			var disabled = (Game.player.getItem(Game.ITEM_WOOD) > 0 ? null : "wood needed");
+			var req = Game.Rules.PRICE_BRIDGE;
+			var disabled = null;
+			if (!Game.player.hasItems(req)) { disabled = req; }
 			list.addItem("Build bridge", this._buildBridge.bind(this), disabled);
 			list.addItem("Scoop water", this._getWater.bind(this));
 		break;
@@ -74,31 +73,36 @@ Game.Interaction.Terrain.prototype._cancel = function() {
 
 Game.Interaction.Terrain.prototype._buildRail = function() {
 	Game.setRail(this._x, this._y);
-	Game.player.adjustItem(Game.ITEM_WOOD, -1);
-	Game.player.adjustItem(Game.ITEM_IRON, -1);
+	Game.player.adjustItems(Game.Rules.PRICE_RAIL, -1);
+	Game.log("You build a rail section.");
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
 
 Game.Interaction.Terrain.prototype._mine = function() {
-	var amount = 2;
-	Game.player.adjustItem(Game.ITEM_IRON, amount);
-	Game.log("You mine " + amount + " pieces of iron.");
+	Game.terrain.clear(this._x, this._y);
+	
+	var obj = {};
+	var base = Game.Rules.REWARD_MINE;
+	for (var p in base) { obj[p] = base[p]; }
 
 	var avail = [Game.ITEM_GEM_RED, Game.ITEM_GEM_BLUE, Game.ITEM_GEM_GREEN, Game.ITEM_GEM_YELLOW];
 	for (var i=0;i<avail.length;i++) {
 		var item = avail[i];
-		if (ROT.RNG.getUniform() > 0.5) {
-			Game.player.adjustItem(item, 1);
-			Game.log("You found a " + Game.Items[item].name + "!");
+		if (ROT.RNG.getUniform() > 0.8) {
+			obj[item] = 1;
 		}
 	}
+	
+	Game.player.adjustItems(obj);
+	Game.log("You mine stuff and retrieve %i.", obj);
 
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
 
 Game.Interaction.Terrain.prototype._buildBridge = function() {
 	Game.terrain.setBridge(this._x, this._y);
-	Game.player.adjustItem(Game.ITEM_WOOD, -1);
+	Game.player.adjustItems(Game.Rules.PRICE_BRIDGE, -1);
+
 	Game.log("You build a robust bridge.");
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
@@ -110,17 +114,16 @@ Game.Interaction.Terrain.prototype._removeBridge = function() {
 }
 
 Game.Interaction.Terrain.prototype._getWater = function() {
-	var amount = 1;
-	Game.player.adjustItem(Game.ITEM_WATER, amount);
-	Game.log("You scoop " + amount + " bottle of water.");
+	Game.player.adjustItems(Game.Rules.REWARD_GET_WATER);
+	Game.log("You scoop some water and get %i.", Game.Rules.REWARD_GET_WATER);
+
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
 
 Game.Interaction.Terrain.prototype._cutTree = function() {
-	Game.terrain.cutTree(this._x, this._y);
+	Game.terrain.clear(this._x, this._y);
 
-	var amount = 3;
-	Game.player.adjustItem(Game.ITEM_WOOD, amount);
-	Game.log("You cut down a tree and got " + amount + " pieces of wood.");
+	Game.player.adjustItems(Game.Rules.REWARD_CUT_TREE);
+	Game.log("You cut down a tree and got %i.", Game.Rules.REWARD_CUT_TREE);
 	this._callback(Game.Interaction.RESULT_END_TURN);
 }
