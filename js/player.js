@@ -104,7 +104,7 @@ Game.Player.prototype.handleEvent = function(e) {
 	var x = this._position[0] + dir[0];
 	var y = this._position[1] + dir[1];
 
-	if (e.altKey || e.metaKey) { /* modifiers -> interation */
+	if (e.altKey || e.metaKey || e.shiftKey) { /* modifiers -> interation */
 		this._tryInteraction(x, y);
 	} else { /* no modifiers -> movement/noop */
 		if (code == -1) { /* noop */
