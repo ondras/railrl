@@ -96,7 +96,7 @@ var Game = {
 		var parent = document.querySelector("#log");
 		parent.insertBefore(item, parent.firstChild);
 		
-		while (parent.childNodes.length > 10) {
+		while (parent.childNodes.length > 20) {
 			parent.removeChild(parent.lastChild);
 		}
 	},
@@ -154,10 +154,12 @@ var Game = {
 		train.addCar(new Game.Train());
 
 		this.engine.start();
-		
+/*		
 		var tmp = {};
 		tmp[Game.ITEM_IRON] = 10;
 		tmp[Game.ITEM_GEM_YELLOW] = 2;
+		this.log("aaaaaaaaaaaaa aaaa aa a aa a asda das da d%i", tmp);
+*/
 	},
 
 	_railFromTemplate: function(x, y, template) {
@@ -176,8 +178,6 @@ var Game = {
 	},
 	
 	logItems: function(items, parent) {
-		/* FIXME title */
-		/* FIXME nbsp */
 		parent.appendChild(document.createTextNode("{"));
 
 		var index = 0;
@@ -191,12 +191,17 @@ var Game = {
 			}
 			
 			var span = document.createElement("span");
-			span.style.color = def.color;
-			span.innerHTML = def.ch;
+			span.className = "item";
+			span.title = def.name;
 			parent.appendChild(span);
 			
-			var count = document.createTextNode(" " + items[id]+"×");
-			parent.appendChild(count);
+			var ch = document.createElement("span");
+			ch.style.color = def.color;
+			ch.innerHTML = def.ch;
+			span.appendChild(ch);
+			
+			var count = document.createTextNode(String.fromCharCode(160) + items[id]+"×");
+			span.appendChild(count);
 			index++;
 		}
 

@@ -204,13 +204,22 @@ Game.Display.prototype._drawTerrain = function(x, y, cx, cy) {
 }
 
 Game.Display.prototype._getRailColor = function(rail) {
-	/* FIXME better */
-	var val = Math.log(rail);
-	if (val < 1.5) {
-		return "brown";
-	} else if (val < 3) {
-		return "#aaa";
-	} else {
-		return "#666";
+	var C1 = [150, 150, 150];
+	var C2 = [165,  42,  42];
+	var VAL1 = 1;
+	var VAL2 = 30;
+	
+	rail = Math.max(rail, VAL1);
+	rail = Math.min(rail, VAL2);
+	
+	var frac = (rail-VAL1) / (VAL2-VAL1);
+	/* FIXME better 0..1 function */
+	
+	var c = [];
+	for (var i=0;i<3;i++) {
+		var val = C1[i] + frac*(C2[i]-C1[i]);
+		c.push(~~val);
 	}
+	
+	return "rgb(" + c.join(",") + ")";
 }
