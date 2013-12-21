@@ -91,6 +91,7 @@ Game.Interaction.Train.prototype._removeCar = function() {
 
 Game.Interaction.Train.prototype._removeTrain = function() {
 	Game.removeBeing(this._locomotive);
+	Game.engine.removeActor(this._locomotive);
 	Game.log("You destroy the remaining locomotive.");
 	this._callback(Game.Interaction.RESULT_AGAIN);
 }
